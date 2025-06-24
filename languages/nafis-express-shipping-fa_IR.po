@@ -1,0 +1,440 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Nafis Express Shipping\n"
+"POT-Creation-Date: 2025-06-21 16:01+0330\n"
+"PO-Revision-Date: 2025-06-21 16:01+0330\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: nafis-express-shipping.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: admin/admin-assets.php:32
+msgid "در حال بارگذاری..."
+msgstr ""
+
+#: admin/admin-assets.php:33
+msgid "خطایی رخ داد. لطفاً دوباره تلاش کنید."
+msgstr ""
+
+#: admin/admin-page.php:11
+msgid "You do not have permission to access this section."
+msgstr "شما اجازه دسترسی به این بخش را ندارید."
+
+#: admin/admin-page.php:29 admin/tabs/login-tab.php:159
+msgid "Login"
+msgstr "ورود"
+
+#: admin/admin-page.php:34
+msgid "Barcodes"
+msgstr "بارکدها"
+
+#: admin/admin-page.php:39
+msgid "Setting"
+msgstr "تنظیمات"
+
+#: admin/admin-page.php:44
+msgid "راهنمای سریع"
+msgstr ""
+
+#: admin/admin-page.php:67
+msgid "Tab is invalid."
+msgstr "برگه نامعتبر است."
+
+#: admin/admin-page.php:72 admin/tabs/login-tab.php:41
+msgid "Your session has expired. Please log in again."
+msgstr ""
+"زمان استفاده از حساب کاربری شما به پایان رسیده است. لطفا دوباره وارد شوید."
+
+#: admin/admin-tables.php:27
+msgid "شناسه"
+msgstr ""
+
+#: admin/admin-tables.php:28
+msgid "نام شعبه"
+msgstr ""
+
+#: admin/admin-tables.php:69 admin/tabs/barcode-tab.php:64
+msgid "شماره سفارش"
+msgstr ""
+
+#: admin/admin-tables.php:70 admin/tabs/barcode-tab.php:50
+msgid "بارکد"
+msgstr ""
+
+#: admin/admin-tables.php:71 admin/tabs/barcode-tab.php:120
+msgid "وضعیت بارکد"
+msgstr ""
+
+#: admin/admin-tables.php:73
+msgid "شعبه"
+msgstr ""
+
+#: admin/admin-tables.php:74
+msgid "گیرنده"
+msgstr ""
+
+#: admin/admin-tables.php:75 admin/tabs/barcode-tab.php:162
+msgid "شهر"
+msgstr ""
+
+#: admin/admin-tables.php:76
+msgid "پست"
+msgstr ""
+
+#: admin/admin-tables.php:77
+msgid "وزن (گرم)"
+msgstr ""
+
+#: admin/admin-tables.php:78
+msgid "تاریخ ویرایش"
+msgstr ""
+
+#: admin/admin-tables.php:79
+msgid "عملیات"
+msgstr ""
+
+#: admin/admin-tables.php:87
+msgid "رهگیری"
+msgstr ""
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:12
+msgid "Nafis Express Barcodes"
+msgstr "رهگیری بارکد نفیس اکسپرس"
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:35
+msgid "Please log in to Nafis Express to view barcodes."
+msgstr "برای مشاهده بارکدها لطفا وارد نفیس اکسپرس شوید."
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:65
+msgid "No barcodes were found for this order."
+msgstr "هیچ بارکدی برای این سفارش یافت نشد."
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:68
+msgid "The barcode might not have been registered yet."
+msgstr "بارکد هنوز ثبت نشده است."
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:69
+msgid "The order may have been cancelled or returned."
+msgstr "سفارش ممکن است لغو یا مرجوع شده باشد."
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:70
+msgid ""
+"There might be a mismatch between order date and barcode registration time."
+msgstr "ممکن است تاریخ سفارش با زمان ثبت بارکد مطابقت نداشته باشد."
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:74
+msgid ""
+"You can review barcodes registered on the same day as this order by visiting "
+"this page:"
+msgstr ""
+"می‌توانید بارکدهای ثبت‌شده در همان روز این سفارش را در این صفحه بررسی کنید:"
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:76
+msgid "Go to today’s barcode list →"
+msgstr "رفتن به لیست بارکدهای امروز →"
+
+#: admin/metabox/admin-order-tracking-woocommerce.php:86
+msgid "View Tracking"
+msgstr "رهگیری بارکد"
+
+#. Plugin Name of the plugin/theme
+#: admin/settings-page.php:10
+msgid "Nafis Express Shipping"
+msgstr "حمل و نقل نفیس اکسپرس"
+
+#: admin/settings-page.php:11 nafis-express-shipping.php:81
+msgid "Nafis Express"
+msgstr "نفیس اکسپرس"
+
+#: admin/tabs/barcode-tab.php:32
+msgid "Out orders"
+msgstr "سفارشات خروجی"
+
+#: admin/tabs/barcode-tab.php:35
+msgid "فیلتر"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:39
+msgid "پاک‌کردن فیلترها"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:53 admin/tabs/barcode-tab.php:67
+#: admin/tabs/barcode-tab.php:81 admin/tabs/barcode-tab.php:95
+#: admin/tabs/barcode-tab.php:108 admin/tabs/barcode-tab.php:123
+#: admin/tabs/barcode-tab.php:144 admin/tabs/barcode-tab.php:165
+msgid "فیلتر شده"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:78
+msgid "نام گیرنده"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:92
+msgid "از تاریخ"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:105
+msgid "تا تاریخ"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:129
+msgid "همه وضعیت‌ها"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:141
+msgid "استان"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:150
+msgid "همه استان‌ها"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:171
+msgid "ابتدا استان را انتخاب کنید"
+msgstr ""
+
+#: admin/tabs/barcode-tab.php:191
+msgid "همه شهرها"
+msgstr ""
+
+#: admin/tabs/branches-tab.php:14
+msgid "شعب نفیس اکسپرس"
+msgstr ""
+
+#: admin/tabs/login-tab.php:57
+msgid "You have successfully logged out."
+msgstr ""
+
+#: admin/tabs/login-tab.php:78
+msgid "Login failed. Please check your credentials."
+msgstr ""
+
+#: admin/tabs/login-tab.php:110
+msgid "Login successful."
+msgstr ""
+
+#: admin/tabs/login-tab.php:117
+msgid "User Information"
+msgstr ""
+
+#: admin/tabs/login-tab.php:121
+msgid "Logout"
+msgstr ""
+
+#: admin/tabs/login-tab.php:127
+msgid "Roles:"
+msgstr ""
+
+#: admin/tabs/login-tab.php:150
+msgid "Username"
+msgstr ""
+
+#: admin/tabs/login-tab.php:154
+msgid "Password"
+msgstr ""
+
+#: admin/tabs/not-authenticated.php:8
+msgid "⚠️ You must log in first to view this section."
+msgstr "⚠️ برای مشاهده این بخش ابتدا باید وارد شوید."
+
+#: admin/tabs/not-authenticated.php:13
+msgid "Notice:"
+msgstr "راهنما:"
+
+#: admin/tabs/not-authenticated.php:14
+msgid ""
+"To use Nafis Express services, you must first log in to your panel account "
+"to retrieve the access token."
+msgstr ""
+"برای استفاده از خدمات نفیس اکسپرس، ابتدا باید وارد حساب پنل شوید تا کلید "
+"دسترسی دریافت شود."
+
+#: admin/tabs/quick-guide/incomplete-products-tab.php:8
+msgid ""
+"Congratulations! All your products have complete shipping information. 🎉"
+msgstr "تبریک! تمام محصولات شما اطلاعات حمل‌ونقل را کامل دارند. 🎉"
+
+#: admin/tabs/setting-tab.php:24
+msgid "Save Settings"
+msgstr "ذخیره تنظیمات"
+
+#: admin/tabs/setting-tab.php:27
+msgid "No settings section has been defined."
+msgstr "هیچ بخشی برای تنظیمات تعریف نشده است."
+
+#: includes/actions/setting-action.php:12
+msgid "Barcode Settings"
+msgstr "تنظیمات بارکد"
+
+#: includes/actions/setting-action.php:20
+msgid "Order status for barcode issuing"
+msgstr "وضعیت سفارش برای صدور بارکد"
+
+#: includes/actions/setting-action.php:38
+msgid "Settings have been saved successfully."
+msgstr "تنظیمات با موفقیت ذخیره شدند."
+
+#: includes/actions/setting-action.php:45
+msgid "Please select a valid order status."
+msgstr "لطفا یک وضعیت سفارش معتبر انتخاب کنید."
+
+#: includes/actions/setting-action.php:75
+msgid "-- Select status --"
+msgstr "-- انتخاب وضعیت --"
+
+#: includes/actions/setting-action.php:84
+msgid ""
+"Select the order status where the \"Issue Barcode\" action should appear."
+msgstr ""
+"وضعیت سفارش را انتخاب کنید که در آن باید عملیات \"صدور بارکد\" نمایش داده "
+"شود."
+
+#: includes/apis/fetch-boxes.php:9
+msgid "— انتخاب جعبه —"
+msgstr ""
+
+#. translators: %s is the barcode, next are width x height x depth and weight in grams
+#: includes/apis/fetch-boxes.php:13
+#, php-format
+msgid "کد %s — %dx%dx%d — %dg"
+msgstr ""
+
+#: includes/class-loader.php:36
+msgid "Nafis Express Shipping:"
+msgstr "حمل و نقل نفیس اکسپرس"
+
+#: includes/class-loader.php:38
+msgid "WooCommerce must be installed and active for this plugin to work."
+msgstr "برای اینکه این افزونه کار کند، باید ووکامرس نصب و فعال باشد."
+
+#. translators: %s is the error message returned from the server
+#: includes/nafis-handle-api-error.php:14
+#, php-format
+msgid "خطا در ارتباط با سرور: %s"
+msgstr ""
+
+#: includes/nafis-handle-api-error.php:24
+msgid "پاسخ نامعتبر از سرور دریافت شد."
+msgstr ""
+
+#: includes/nafis-handle-api-error.php:36
+msgid "درخواست ناموفق بود. لطفاً اطلاعات ورودی را بررسی کنید."
+msgstr ""
+
+#. translators: %d is the HTTP status code from the server response
+#: includes/nafis-handle-api-error.php:42
+#, php-format
+msgid "خطا با کد HTTP %d"
+msgstr ""
+
+#: includes/nafis-handle-api-error.php:47
+msgid "خطای ناشناخته‌ای رخ داد."
+msgstr ""
+
+#: includes/woocommerce/core-config-woocommerce.php:12
+#: includes/woocommerce/core-config-woocommerce.php:31
+#: includes/woocommerce/core-config-woocommerce.php:75
+msgid "Ready for Barcode"
+msgstr "آماده برای صدور بارکد"
+
+#: includes/woocommerce/core-config-woocommerce.php:18
+#, php-format
+msgid "Ready for Barcode <span class=\"count\">(%s)</span>"
+msgid_plural "Ready for Barcode <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/woocommerce/core-config-woocommerce.php:51
+msgid "Change status to Ready for Barcode"
+msgstr "تغییر وضعیت به آماده صدور بارکد"
+
+#: includes/woocommerce/shipping-fields.php:9
+msgid "نفیس اکسپرس"
+msgstr ""
+
+#: includes/woocommerce/shipping-fields.php:13
+msgid "برای استفاده از امکانات نفیس اکسپرس باید وارد حساب کاربری شوید."
+msgstr ""
+
+#: includes/woocommerce/shipping-fields.php:24
+msgid "سایز جعبه"
+msgstr ""
+
+#: includes/woocommerce/shipping-fields.php:27
+msgid ""
+"سایز مناسب جعبه برای ارسال کالا در صورتی که فقط و فقط یک واحد از محصول مد "
+"نظر در سبد خرید داشته باشد."
+msgstr ""
+
+#: includes/woocommerce/shipping-fields.php:32
+msgid ""
+"هیچ سایز جعبه‌ای یافت نشد. لطفاً از صفحه ورود، اطلاعات را به‌روزرسانی کنید."
+msgstr ""
+
+#: includes/woocommerce/shipping-fields.php:38
+msgid "زمان ارسال (روز کاری)"
+msgstr ""
+
+#: includes/woocommerce/shipping-fields.php:41
+msgid "زمان تقریبی ارسال از زمان سفارش در x روز کاری دیگر"
+msgstr ""
+
+#: includes/woocommerce/woocommerce-actions.php:16
+msgid "Nafis Express Actions"
+msgstr "عملیات نفیس اکسپرس"
+
+#: includes/woocommerce/woocommerce-actions.php:66
+msgid "Issue Barcode"
+msgstr "صدور بارکد"
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/peymanath/nafis-express-shipping"
+msgstr "https://github.com/peymanath/nafis-express-shipping"
+
+#. Description of the plugin/theme
+msgid ""
+"Manage and integrate Nafis Express shipping service with WooCommerce. "
+"Includes custom box size, delivery time fields, and API integration."
+msgstr ""
+"مدیریت و ادغام سرویس ارسال نفیس اکسپرس با ووکامرس. شامل اندازه جعبه سفارشی، "
+"فیلدهای زمان تحویل و ادغام API."
+
+#. Author of the plugin/theme
+msgid "Peyman Naderi"
+msgstr "پیمان نادری"
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/peymanath"
+msgstr "https://github.com/peymanath"
+
+#~ msgctxt "Order status dropdown label"
+#~ msgid "Ready for Barcode"
+#~ msgstr "آماده برای صدور بارکد"
+
+#, fuzzy
+#~| msgid "Nafis Express Barcodes"
+#~ msgctxt "Order status"
+#~ msgid "Nafis Barcode Issued"
+#~ msgstr "رهگیری بارکد نفیس اکسپرس"
+
+#~ msgid "Project source on GitHub"
+#~ msgstr "مشاهده سورس کد"
+
+#~ msgid "Express Shipping"
+#~ msgstr "نفیس اکسپرس"
+
+#~ msgid "شما اجازه دسترسی به این بخش را ندارید."
+#~ msgstr "شما اجازه دسترسی به این بخش را ندارید."

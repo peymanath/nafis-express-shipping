@@ -1,0 +1,11 @@
+# Exclude development-only files from ZIP archives
+/.gitignore export-ignore
+/.github export-ignore
+/empty.txt export-ignore
+/index.json export-ignore
+/.gitattributes export-ignore
+/release.sh export-ignore
+/dist export-ignore
+/tests export-ignore
+/composer.json export-ignore
+/phpcs.xml export-ignore
