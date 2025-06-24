@@ -21,7 +21,7 @@
 
 /**
  * Plugin Name:       Nafis Express Shipping
- * Plugin URI:        https://github.com/peymanath/nafis-express-shipping
+ * Plugin URI:        https://wordpress.org/plugins/nafis-express-shipping
  * Description:       Manage and integrate Nafis Express shipping service with WooCommerce. Includes custom box size, delivery time fields, and API integration.
  * Version:           0.1.5
  * Requires at least: 5.6
