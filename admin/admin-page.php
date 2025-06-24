@@ -30,15 +30,14 @@ function nafis_express_shipping_render_admin_page()
     /**
      * Set Active Tab
      */
-    $active_tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'login';
+    $token = nafis_get_valid_token();
+    $active_tab = isset($_GET['tab'])
+        ? sanitize_key($_GET['tab'])
+        : ($token ? 'barcode' : 'setting');
 
 ?>
     <div class="wrap wpp-settings-wrap">
         <h2 class="nav-tab-wrapper">
-            <a href="?page=nafis-express-shipping&tab=login"
-                class="nav-tab <?php echo $active_tab === 'login' ? 'nav-tab-active' : ''; ?>">
-                <?php echo esc_html__('Login', 'nafis-express-shipping'); ?>
-            </a>
 
             <a href="?page=nafis-express-shipping&tab=barcode"
                 class="nav-tab <?php echo $active_tab === 'barcode' ? 'nav-tab-active' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
@@ -59,9 +58,6 @@ function nafis_express_shipping_render_admin_page()
         <div id="tab_container">
             <?php
             switch ($active_tab) {
-                case 'login':
-                    require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/login-tab.php';
-                    break;
                 // case 'branches':
                 //     require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/branches-tab.php';
                 //     break;
