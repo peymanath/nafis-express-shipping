@@ -41,6 +41,9 @@ const popup = (title = "عنوان پاپ اپ", content = "در حال بارگ
   return element;
 };
 
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   /**
    * Order EXited
@@ -62,20 +65,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const header = `
                         <p><strong>شرکت:</strong> ${data.companyTitle}</p>
-                        <p><strong>گیرنده:</strong> ${
-                          data.receiverName
-                        } | موبایل: ${data.receiverMobile}</p>
-                        ${
-                          !!data.agentName
-                            ? `<p><strong>مامور توزیع:</strong> ${data.agentName}</p>`
-                            : ""
-                        }
-                        <p><strong>مبداً:</strong> ${
-                          data.startCity
-                        } → <strong>مقصد:</strong> ${data.finalCity}</p>
-                        <p><strong>شماره سفارش:</strong> ${
-                          data.orderID
-                        } | وزن: ${data.weight} گرم</p>
+                        <p><strong>گیرنده:</strong> ${data.receiverName
+            } | موبایل: ${data.receiverMobile}</p>
+                        ${!!data.agentName
+              ? `<p><strong>مامور توزیع:</strong> ${data.agentName}</p>`
+              : ""
+            }
+                        <p><strong>مبداً:</strong> ${data.startCity
+            } → <strong>مقصد:</strong> ${data.finalCity}</p>
+                        <p><strong>شماره سفارش:</strong> ${data.orderID
+            } | وزن: ${data.weight} گرم</p>
                         <hr>
                     `;
 
@@ -90,22 +89,19 @@ document.addEventListener("DOMContentLoaded", () => {
                             </thead>
                             <tbody>
                                 ${data.logs
-                                  .map(
-                                    (log) => `
+              .map(
+                (log) => `
                                     <tr>
-                                        <td style="border-bottom:1px solid #eee; padding:6px;">${
-                                          log.statusDateTimeString
-                                        }</td>
-                                        <td style="border-bottom:1px solid #eee; padding:6px;">${
-                                          log.statusTitle
-                                        }</td>
-                                        <td style="border-bottom:1px solid #eee; padding:6px;">${
-                                          log.branchTitle || "-"
-                                        }</td>
+                                        <td style="border-bottom:1px solid #eee; padding:6px;">${log.statusDateTimeString
+                  }</td>
+                                        <td style="border-bottom:1px solid #eee; padding:6px;">${log.statusTitle
+                  }</td>
+                                        <td style="border-bottom:1px solid #eee; padding:6px;">${log.branchTitle || "-"
+                  }</td>
                                     </tr>
                                 `
-                                  )
-                                  .join("")}
+              )
+              .join("")}
                             </tbody>
                         </table>
                     `;
@@ -135,6 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      const packagingData = []; // آرایه برای ذخیره اطلاعات بسته‌بندی
+
       const infoTable = `
         <table style="width:100%; border-collapse:collapse; text-align:right; margin-bottom: 1rem;">
           <tbody>
@@ -154,8 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td style="border-bottom:1px solid #eee; padding:6px;">آدرس</td>
                 <td style="border-bottom:1px solid #eee; padding:6px;">${data.address}</td>
               </tr>
-
-            </tbody>
+          </tbody>
         </table>
       `;
 
@@ -166,15 +163,66 @@ document.addEventListener("DOMContentLoaded", () => {
           </thead>
           <tbody>
             ${data.products
-              .map(
-                (p) => `
+          .map(
+            (p) => `
               <tr>
                 <td style="border-bottom:1px solid #eee; padding:6px;">${p.name}</td>
                 <td style="border-bottom:1px solid #eee; padding:6px;">${p.qty}</td>
               </tr>
             `
-              )
-              .join("")}
+          )
+          .join("")}
+          </tbody>
+        </table>
+      `;
+
+      const renderPackagingRow = (index, isLastRow = false) => {
+        const sizeOptions = (data.warehouseBoxes || []).map(
+          (box) => `<option value="${box.id}">${box.label}</option>`
+        ).join('');
+
+        const weightOptions = ['100', '250', '500', '1000'].map(
+          (w) => `<option value="${w}">${w}g</option>`
+        ).join('');
+
+        return `
+          <tr>
+            <td style="padding:6px;">
+              <select data-index="${index}" class="nafis-box-size" style="width:100%;">
+                <option value="">— انتخاب جعبه —</option>
+                ${sizeOptions}
+              </select>
+            </td>
+            <td style="padding:6px;">
+              <input
+                type="number"
+                min="0"
+                step="1"
+                placeholder="وزن (گرم)"
+                data-index="${index}"
+                class="nafis-box-weight"
+                style="width:100%; box-sizing:border-box;"
+              />
+            </td>
+            <td style="padding:6px; text-align:center;">
+              ${isLastRow ? `<button type="button" class="button add-packaging-row">+</button>` : ''}
+            </td>
+          </tr>
+        `;
+      };
+
+      const packagingSection = `
+        <h3 style="margin-top: 20px;">بسته‌بندی</h3>
+        <table id="nafis-packaging-table" style="width:100%; border-collapse:collapse; text-align:right;">
+          <thead>
+            <tr>
+              <th style="border-bottom:1px solid #ccc; padding:8px;">سایز جعبه</th>
+              <th style="border-bottom:1px solid #ccc; padding:8px;">وزن جعبه</th>
+              <th style="border-bottom:1px solid #ccc; padding:8px;">افزودن</th>
+            </tr>
+          </thead>
+          <tbody id="packaging-body">
+            ${renderPackagingRow(0, true)}
           </tbody>
         </table>
       `;
@@ -186,7 +234,36 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      content.innerHTML = `<h3>اطلاعات سفارش</h3>${infoTable}<h3>محصولات</h4>${productList}${footer}`;
+      content.innerHTML = `<h3>اطلاعات سفارش</h3>${infoTable}<h3>محصولات</h4>${productList}${packagingSection}${footer}`;
+
+      // Add dynamic row logic
+      const packagingBody = document.getElementById('packaging-body');
+
+      packagingBody.addEventListener('click', function (e) {
+        if (e.target.classList.contains('add-packaging-row')) {
+          const lastIndex = packagingBody.querySelectorAll('tr').length;
+          const oldButton = e.target;
+          oldButton.remove(); // remove the old "+" button
+          const newRowHTML = renderPackagingRow(lastIndex, true);
+          packagingBody.insertAdjacentHTML('beforeend', newRowHTML);
+        }
+      });
+
+      // Handle confirm
+      document.getElementById('nafis-barcode-confirm-btn').addEventListener('click', () => {
+        const rows = packagingBody.querySelectorAll('tr');
+        const result = [];
+
+        rows.forEach((row) => {
+          const size = row.querySelector('.nafis-box-size')?.value;
+          const weight = row.querySelector('.nafis-box-weight')?.value;
+          if (size && weight) result.push({ size, weight });
+        });
+
+        console.log('📦 Packaging info to send:', result);
+        // در اینجا به بک‌اند ارسال کن با result و سایر داده‌ها
+      });
     });
   });
+
 });

@@ -31,7 +31,8 @@ add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column,
     $order_id = $order->get_id();
 
     $nafis_express_data = get_option("nafis_express_data");
-
+    $boxes = nafis_get_cached_boxes();
+    
     // // companyID: z.union([z.string(), z.number()]),
     // // receiverFirstName: z.string().min(1, { message: 'نام گیرنده الزامی است' }),
     // // receiverLastName: z.string().min(1, { message: 'نام خانوادگی گیرنده الزامی است' }),
@@ -56,6 +57,19 @@ add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column,
                 'qty'  => $item->get_quantity(),
             ];
         }, $order->get_items())),
+        'warehouseBoxes' => array_values(array_map(function ($box) {
+            return [
+                'id'     => $box['postSizeId'],
+                'label'  => sprintf(
+                    __('کد %1$s — %2$dx%3$dx%4$d — %5$dg', 'nafis-express-shipping'),
+                    $box['barcode'],
+                    $box['lenght'], // احتمالاً غلط املایی، باید اصلاح بشه
+                    $box['width'],
+                    $box['height'],
+                    $box['weight']
+                ),
+            ];
+        }, $boxes)),
     ];
 
     printf(

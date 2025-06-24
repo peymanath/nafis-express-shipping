@@ -26,8 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         check_admin_referer('nafis_login_action', 'nafis_login_nonce');
         [$token, $error_msg] = nafis_handle_login();
         $login_success = $token !== null;
-
+    
         if ($login_success) {
+            nafis_refresh_persistent_filter_data($token);
             $redirect_url = admin_url('admin.php?page=nafis-express-shipping&tab=barcode');
             wp_safe_redirect($redirect_url);
             exit;
@@ -37,12 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // --- Login Check ---
 if ($token && !nafis_is_token_expired($token)) {
-    if ($login_success) {
-        nafis_refresh_persistent_filter_data($token);
-        echo '<div class="notice notice-success is-dismissible"><p>' .
-            esc_html__('Login successful.', 'nafis-express-shipping') . '</p></div>';
-        $nafis_global_notice_shown = true;
-    }
 
     $data = get_option("nafis_express_data");
 
