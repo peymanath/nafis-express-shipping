@@ -93,6 +93,9 @@ add_filter('plugin_row_meta', function ($links, $file) {
     return $links;
 }, 10, 2);
 
+// Actions
+require_once NAFIS_EXPRESS_SHIPPING_INC_ACTIONS . "all-actions.php";
+
 // Load core plugin files
 require_once NAFIS_EXPRESS_SHIPPING_INC . 'class-loader.php';
 

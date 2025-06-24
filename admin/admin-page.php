@@ -44,6 +44,16 @@ function nafis_express_shipping_render_admin_page()
                 class="nav-tab <?php echo $active_tab === 'barcode' ? 'nav-tab-active' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
                 <?php echo esc_html__('Barcodes', 'nafis-express-shipping'); ?>
             </a>
+
+            <a href="?page=nafis-express-shipping&tab=setting"
+                class="nav-tab <?php echo $active_tab === 'setting' ? 'nav-tab-active' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
+                <?php echo esc_html__('Setting', 'nafis-express-shipping'); ?>
+            </a>
+
+            <a href="?page=nafis-express-shipping&tab=quick-guide"
+                class="nav-tab <?php echo $active_tab === 'quick-guide' ? 'nav-tab-active' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
+                <?php echo esc_html__('راهنمای سریع', 'nafis-express-shipping'); ?>
+            </a>
         </h2>
 
         <div id="tab_container">
@@ -57,6 +67,12 @@ function nafis_express_shipping_render_admin_page()
                 //     break;
                 case 'barcode':
                     require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/barcode-tab.php';
+                    break;
+                case 'setting':
+                    require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/setting-tab.php';
+                    break;
+                case 'quick-guide':
+                    require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/quick-guide-tab.php';
                     break;
                 default:
                     echo '<div class="notice notice-error"><p>' . esc_html__('Tab is invalid.', 'nafis-express-shipping') . '</p></div>';

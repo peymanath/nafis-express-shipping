@@ -108,3 +108,107 @@ class Nafis_Exited_Orders_List_Table extends WP_List_Table
         ]);
     }
 }
+
+/**
+ * Incompelte Product
+ */
+class Nafis_Incomplete_Products_Table extends WP_List_Table
+{
+    public function __construct()
+    {
+        parent::__construct([
+            'singular' => 'product',
+            'plural'   => 'products',
+            'ajax'     => false,
+        ]);
+    }
+
+    public function get_columns()
+    {
+        return [
+            'title'                 => 'نام محصول',
+            'length'                => 'طول',
+            'width'                 => 'عرض',
+            'height'                => 'ارتفاع',
+            'weight'                => 'وزن',
+            '_nafis_box_size'       => 'سایز جعبه',
+            '_nafis_delivery_time'  => 'ارسال روز کاری',
+        ];
+    }
+
+    public function prepare_items()
+    {
+        $per_page = 20;
+        $paged    = $this->get_pagenum();
+
+        $args = [
+            'post_type'      => 'product',
+            'post_status'    => 'publish',
+            'posts_per_page' => $per_page,
+            'paged'          => $paged,
+            'meta_query'     => [
+                'relation' => 'OR',
+                ['key' => '_length',              'compare' => 'NOT EXISTS'],
+                ['key' => '_width',               'compare' => 'NOT EXISTS'],
+                ['key' => '_height',              'compare' => 'NOT EXISTS'],
+                ['key' => '_weight',              'compare' => 'NOT EXISTS'],
+                ['key' => '_nafis_box_size',      'compare' => 'NOT EXISTS'],
+                ['key' => '_nafis_delivery_time', 'compare' => 'NOT EXISTS'],
+            ],
+        ];
+
+        $query = new WP_Query($args);
+
+        $data = [];
+        foreach ($query->posts as $post) {
+            $product_id = $post->ID;
+            $data[] = [
+                'ID'                    => $product_id,
+                'title'                 => sprintf('<a href="%s">%s</a>', get_edit_post_link($product_id), esc_html(get_the_title($product_id))),
+                'length'                => get_post_meta($product_id, '_length', true),
+                'width'                 => get_post_meta($product_id, '_width', true),
+                'height'                => get_post_meta($product_id, '_height', true),
+                'weight'                => get_post_meta($product_id, '_weight', true),
+                '_nafis_box_size'       => get_post_meta($product_id, '_nafis_box_size', true),
+                '_nafis_delivery_time'  => get_post_meta($product_id, '_nafis_delivery_time', true),
+            ];
+        }
+
+        $this->items = $data;
+
+        $this->set_pagination_args([
+            'total_items' => $query->found_posts,
+            'per_page'    => $per_page,
+            'total_pages' => $query->max_num_pages,
+        ]);
+
+        $this->_column_headers = [$this->get_columns(), [], []];
+    }
+
+    public function column_title($item) {
+        return $item['title'];
+    }
+
+    protected function column_length($i) {
+        return empty($i['length']) ? '<span style="color:red;">تکمیل نشده</span>' : '<span style="color:green;">تکمیل شده</span>';
+    }
+    protected function column_width($i) {
+        return empty($i['width']) ? '<span style="color:red;">تکمیل نشده</span>' : '<span style="color:green;">تکمیل شده</span>';
+    }
+    protected function column_height($i) {
+        return empty($i['height']) ? '<span style="color:red;">تکمیل نشده</span>' : '<span style="color:green;">تکمیل شده</span>';
+    }
+    protected function column_weight($i) {
+        return empty($i['weight']) ? '<span style="color:red;">تکمیل نشده</span>' : '<span style="color:green;">تکمیل شده</span>';
+    }
+    protected function column__nafis_box_size($i) {
+        return empty($i['_nafis_box_size']) ? '<span style="color:red;">تکمیل نشده</span>' : '<span style="color:green;">تکمیل شده</span>';
+    }
+    protected function column__nafis_delivery_time($i) {
+        return empty($i['_nafis_delivery_time']) ? '<span style="color:red;">تکمیل نشده</span>' : '<span style="color:green;">تکمیل شده</span>';
+    }
+
+    public function column_default($item, $column_name) {
+        return '';
+    }
+}
