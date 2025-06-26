@@ -1,6 +1,6 @@
 === Nafis Express Shipping ===
 Contributors: peymanseo
-Tags: woocommerce, shipping, nafis, express, plugin
+Tags: woocommerce, shipping, nafis, express, barcode
 Requires at least: 5.6
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -8,30 +8,35 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A WooCommerce plugin for integrating Nafis Express shipping service with custom box size and delivery options.
+A lightweight WooCommerce plugin to track exited orders with Nafis Express barcodes.
 
 == Description ==
 
-Nafis Express Shipping plugin integrates your WooCommerce store with the Nafis Express delivery system.  
-It allows store managers to select delivery options and track exited orders via token-authenticated API calls.
+The **Nafis Express Shipping** plugin integrates WooCommerce with the Nafis Express delivery system.  
+This initial version lets store managers **view a list of exited orders** and their associated **barcodes** through a dedicated admin page.
+
+⚠️ *A valid token is required to use this feature.*
 
 == Installation ==
 
 1. Upload the plugin to the `/wp-content/plugins/` directory.
-2. Activate it through the 'Plugins' menu in WordPress.
-3. Navigate to **WooCommerce → Products → Shipping tab** to view plugin fields (token required).
+2. Activate it via the 'Plugins' menu in WordPress.
+3. Go to **WooCommerce → Orders → Exited Orders (Nafis)** to view the barcode list.
 
 == Frequently Asked Questions ==
 
-= Does it work with all product types? =
-This plugin is designed for simple product scenarios, but can be extended for other types.
+= What does this plugin do? =
+It displays exited orders with their Nafis Express barcodes in the WooCommerce admin panel.
+
+= Do I need an account? =
+Yes, you must log in using your Nafis Express credentials to fetch barcode data.
 
 == Changelog ==
 
-= 0.1.0 =
-* Initial public release.
+= 1.0.0 =
+* First release – view exited orders with barcodes.
 
 == Upgrade Notice ==
 
-= 0.1.0 =
-This is the first release. No upgrade required.
+= 1.0.0 =
+Initial release – no upgrade required.

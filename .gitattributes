@@ -9,3 +9,5 @@
 /tests export-ignore
 /composer.json export-ignore
 /phpcs.xml export-ignore
+/README.md export-ignore
+/banner-1544x500.png export-ignore
