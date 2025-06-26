@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (! defined('ABSPATH')) exit;
 
 // Load helpers
 require_once NAFIS_EXPRESS_SHIPPING_INC . 'class-loader.php';
@@ -14,17 +14,19 @@ add_action('plugins_loaded', function () {
     if (is_admin()) {
         // Check if WooCommerce is active
         if (class_exists('WooCommerce')) {
-            require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'settings-page.php';
             require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'admin-assets.php';
+            require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'settings-page.php';
             require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'admin-tables.php';
             require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'metabox/index.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'shipping-fields.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'woocommerce-actions.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'core-config-woocommerce.php';
+            require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'replace-city-province.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_API . 'fetch-boxes.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_API . 'fetch-branch.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_API . 'fetch-barcode.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_API . 'nafis_api_request.php';
+            require_once NAFIS_EXPRESS_SHIPPING_INC . 'customer-assets.php';
         } else {
             add_action('admin_notices', function () {
                 echo '<div class="notice notice-error"><p><strong>' .

@@ -16,3 +16,4 @@ composer.lock
 # Ignore releases & temp
 *.zip
 empty.txt
+.vscode
