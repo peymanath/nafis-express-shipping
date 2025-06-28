@@ -44,7 +44,7 @@ function nafis_order_barcodes_meta_box($post)
     $token = nafis_get_valid_token($user_id);
 
     if (!empty($user_barcdes)) {
-        var_dump($user_barcdes);
+        // var_dump($user_barcdes);
     }
 
 

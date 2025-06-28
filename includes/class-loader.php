@@ -11,9 +11,9 @@ require_once NAFIS_EXPRESS_SHIPPING_INC . 'utils.php';
 // Delay admin features until plugins are fully loaded
 add_action('plugins_loaded', function () {
     // Only run in admin
-    if (is_admin()) {
-        // Check if WooCommerce is active
-        if (class_exists('WooCommerce')) {
+    if (class_exists('WooCommerce')) {
+        if (is_admin()) {
+            // Check if WooCommerce is active
             require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'admin-assets.php';
             require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'settings-page.php';
             require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'admin-tables.php';
@@ -21,20 +21,20 @@ add_action('plugins_loaded', function () {
             require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'shipping-fields.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'woocommerce-actions.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'core-config-woocommerce.php';
-            require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'replace-city-province.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_API . 'fetch-boxes.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_API . 'fetch-branch.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_API . 'fetch-barcode.php';
             require_once NAFIS_EXPRESS_SHIPPING_INC_API . 'nafis_api_request.php';
-            require_once NAFIS_EXPRESS_SHIPPING_INC . 'customer-assets.php';
-        } else {
-            add_action('admin_notices', function () {
-                echo '<div class="notice notice-error"><p><strong>' .
-                    esc_html__('Nafis Express Shipping:', 'nafis-express-shipping') .
-                    '</strong> ' .
-                    esc_html__('WooCommerce must be installed and active for this plugin to work.', 'nafis-express-shipping') .
-                    '</p></div>';
-            });
         }
+        require_once NAFIS_EXPRESS_SHIPPING_INC . 'customer-assets.php';
+        require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'replace-city-province.php';
+    } else {
+        add_action('admin_notices', function () {
+            echo '<div class="notice notice-error"><p><strong>' .
+                esc_html__('Nafis Express Shipping:', 'nafis-express-shipping') .
+                '</strong> ' .
+                esc_html__('WooCommerce must be installed and active for this plugin to work.', 'nafis-express-shipping') .
+                '</p></div>';
+        });
     }
 });

@@ -32,7 +32,7 @@ add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column,
 
     $nafis_express_data = get_option("nafis_express_data");
     $boxes = nafis_get_cached_boxes();
-    
+
     // // companyID: z.union([z.string(), z.number()]),
     // // receiverFirstName: z.string().min(1, { message: 'نام گیرنده الزامی است' }),
     // // receiverLastName: z.string().min(1, { message: 'نام خانوادگی گیرنده الزامی است' }),
@@ -51,6 +51,8 @@ add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column,
         'receiverMobile'                => $order->get_billing_phone() ?: $order->get_shipping_phone(),
         'postcode'                      => $order->get_billing_postcode() ?: $order->get_shipping_postcode(),
         'address'                       => trim($order->get_billing_address_1() ?: $order->get_shipping_address_1()),
+        'provinceCode'                  => $order->get_billing_state() ?: $order->get_shipping_state(),
+        'city'                          => $order->get_billing_city() ?: $order->get_shipping_city(),
         'products'                      => array_values(array_map(function ($item) {
             return [
                 'name' => $item->get_name(),

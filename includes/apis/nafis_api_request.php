@@ -26,9 +26,9 @@ function nafis_api_request($method, $endpoint, $token = null, $params = [], $bod
     if ($method === 'POST' || $method === 'PUT') {
         $args['body'] = wp_json_encode($body ?? []);
     }
-
+    
     $response = wp_remote_request($url, array_merge($args, ['method' => strtoupper($method)]));
-
+    
     if (is_wp_error($response)) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             error_log("❌ Nafis API Error ({$endpoint}): " . $response->get_error_message());
