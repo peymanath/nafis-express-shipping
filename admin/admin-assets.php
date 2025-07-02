@@ -24,6 +24,14 @@ add_action('admin_enqueue_scripts', function ($hook) {
         true
     );
 
+    wp_enqueue_script(
+        'nafis-province-city-data',
+        NAFIS_EXPRESS_SHIPPING_ASSETS . 'js/nafis-province-city-data.js',
+        [],
+        '1.0.0',
+        true
+    );
+
     // Localize script for nonce and translations if needed
     wp_localize_script('nafis-express-admin-script', 'nafisExpressData', [
         'ajaxurl' => admin_url('admin-ajax.php'),

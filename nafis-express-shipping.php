@@ -52,6 +52,9 @@ define('NAFIS_EXPRESS_SHIPPING_INC', NAFIS_EXPRESS_SHIPPING_PATH . 'includes/');
 // Define path to the includes directory Woo
 define('NAFIS_EXPRESS_SHIPPING_INC_WOO', NAFIS_EXPRESS_SHIPPING_INC . 'woocommerce/');
 
+// Define path to the includes directory Fetchs
+define('NAFIS_EXPRESS_SHIPPING_INC_FETCH', NAFIS_EXPRESS_SHIPPING_INC . 'fetches/');
+
 // Define path to the includes directory Apis
 define('NAFIS_EXPRESS_SHIPPING_INC_API', NAFIS_EXPRESS_SHIPPING_INC . 'apis/');
 
@@ -64,7 +67,12 @@ define('NAFIS_EXPRESS_SHIPPING_ADMIN', NAFIS_EXPRESS_SHIPPING_PATH . 'admin/');
 // Define URL to the plugin's assets directory
 define('NAFIS_EXPRESS_SHIPPING_ASSETS', NAFIS_EXPRESS_SHIPPING_URL . 'assets/');
 
-if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '.dev') !== false) {
+// Base namespace for our custom REST APIs
+define('NAFIS_EXPRESS_SHIPPING_API_NAMESPACE', 'nafis-api/v1');
+
+define('NAFIS_EXPRESS_SHIPPING_PLUGIN_FILE', __FILE__);
+
+if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '.dev') !== false || strpos($_SERVER['HTTP_HOST'], 'nafiscosmocare.com') !== false) {
     define('NAFIS_EXPRESS_SHIPPING_BASE_API', 'https://api.nafisexpress.com');
 } else {
     define('NAFIS_EXPRESS_SHIPPING_BASE_API', 'https://api.nafisexpress.com');
@@ -100,5 +108,4 @@ require_once NAFIS_EXPRESS_SHIPPING_INC_ACTIONS . "all-actions.php";
 require_once NAFIS_EXPRESS_SHIPPING_INC . 'class-loader.php';
 
 // Activation Hook
-define('NAFIS_EXPRESS_SHIPPING_PLUGIN_FILE', __FILE__);
 require_once NAFIS_EXPRESS_SHIPPING_INC . "activation-hook.php";

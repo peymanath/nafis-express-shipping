@@ -131,8 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const packagingData = []; // آرایه برای ذخیره اطلاعات بسته‌بندی
-
       const infoTable = `
         <table style="width:100%; border-collapse:collapse; text-align:right; margin-bottom: 1rem;">
           <tbody>
@@ -152,6 +150,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td style="border-bottom:1px solid #eee; padding:6px;">آدرس</td>
                 <td style="border-bottom:1px solid #eee; padding:6px;">${data.address}</td>
               </tr>
+              <tr>
+                <td style="border-bottom:1px solid #eee; padding:6px;">استان</td>
+                <td style="border-bottom:1px solid #eee; padding:6px;">${data.province.name}</td>
+              </tr>
+              <tr>
+                <td style="border-bottom:1px solid #eee; padding:6px;">شهر</td>
+                <td style="border-bottom:1px solid #eee; padding:6px;">${data.city.name}</td>
+              </tr>
           </tbody>
         </table>
       `;
@@ -166,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .map(
             (p) => `
               <tr>
-                <td style="border-bottom:1px solid #eee; padding:6px;">${p.name}</td>
+                <td style="border-bottom:1px solid #eee; padding:6px;">${p.title}</td>
                 <td style="border-bottom:1px solid #eee; padding:6px;">${p.qty}</td>
               </tr>
             `
@@ -177,20 +183,16 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       const renderPackagingRow = (index, isLastRow = false) => {
-        const sizeOptions = (data.warehouseBoxes || []).map(
+        const boxNumberOptions = (data.warehouseBoxes || []).map(
           (box) => `<option value="${box.id}">${box.label}</option>`
-        ).join('');
-
-        const weightOptions = ['100', '250', '500', '1000'].map(
-          (w) => `<option value="${w}">${w}g</option>`
         ).join('');
 
         return `
           <tr>
             <td style="padding:6px;">
-              <select data-index="${index}" class="nafis-box-size" style="width:100%;">
+              <select data-index="${index}" class="nafis_box_size" style="width:100%;">
                 <option value="">— انتخاب جعبه —</option>
-                ${sizeOptions}
+                ${boxNumberOptions}
               </select>
             </td>
             <td style="padding:6px;">
@@ -253,17 +255,111 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('nafis-barcode-confirm-btn').addEventListener('click', () => {
         const rows = packagingBody.querySelectorAll('tr');
         const result = [];
+        let hasWeightError = false;
 
-        rows.forEach((row) => {
-          const size = row.querySelector('.nafis-box-size')?.value;
-          const weight = row.querySelector('.nafis-box-weight')?.value;
-          if (size && weight) result.push({ size, weight });
+        rows.forEach((row, idx) => {
+          const boxNumber = row.querySelector('.nafis_box_size')?.value;
+          const weightValue = row.querySelector('.nafis-box-weight')?.value;
+          const weight = parseFloat(weightValue);
+
+          if (boxNumber && weightValue) {
+            if (isNaN(weight) || weight < 50) {
+              hasWeightError = true;
+            } else {
+              result.push({ boxNumber, weight });
+            }
+          }
         });
 
-        console.log('📦 Packaging info to send:', result);
-        // در اینجا به بک‌اند ارسال کن با result و سایر داده‌ها
+        if (hasWeightError) {
+          alert("❌ وزن هر بسته باید حداقل ۵۰ گرم باشد. لطفاً اصلاح کنید.");
+          return; // جلوگیری از ادامه ارسال
+        }
+
+        if (result.length < 1) {
+          alert("❌ لطفاً حداقل یک بسته‌بندی معتبر وارد کنید (شامل انتخاب جعبه و وزن بیش از ۵۰ گرم).");
+          return;
+        }
+        
+        const finalPayload = {
+          customer: {
+            firstName: data.receiverFirstName,
+            lastName: data.receiverLastName,
+            mobile: data.receiverMobile,
+            postcode: data.postcode,
+            address: data.address,
+            province: data.province,
+            city: data.city,
+            orderID: data.orderID,
+          },
+          products: data.products,
+          packaging: result,
+        };
+
+        const confirmBtn = document.getElementById('nafis-barcode-confirm-btn');
+        confirmBtn.disabled = true;
+        confirmBtn.innerText = "در حال ارسال...";
+        const testUrl = new URL(nafisExpressData.ajaxurl);
+        testUrl.searchParams.set('action', 'nafis_issue_barcode');
+        testUrl.searchParams.set('nonce', nafisExpressData.nonce);
+        testUrl.searchParams.set('payload', JSON.stringify(finalPayload));
+
+        // const confirmBtn = document.getElementById('nafis-barcode-confirm-btn');
+
+        fetch(testUrl.toString())
+        .then((res) => res.json())
+        .then((response) => {
+          // وضعیت موفق
+          if (response.success === true) {
+            const data = response.data;
+      
+            // بررسی وجود ارور در داده‌های موفق
+            const errors = Array.isArray(data)
+              ? data.filter(item => item.errorMessage).map(item => item.errorMessage)
+              : [];
+      
+            if (errors.length > 0) {
+              const message = "❌ خطا در صدور بارکد:\n\n" + errors.map((e, i) => `${i + 1}. ${e}`).join("\n");
+              alert(message);
+
+              const hasUnsupportedCity = errors.some(e => e.includes("شهر مقصد تحت پوشش نفیس اکسپرس نیست"));
+              if (hasUnsupportedCity) {
+                // location.reload();
+              }
+            } else {
+              alert("✅ بارکدها با موفقیت صادر شدند.");
+            }
+      
+            return; // ❗ جلوگیری از ادامه بررسی خطاهای پایین
+          }
+      
+          // وضعیت ناموفق - بررسی خطاها
+          let errorMsg = "❌ خطا در صدور بارکد:";
+      
+          if (response.message) {
+            errorMsg += " " + response.message;
+          } else if (Array.isArray(response.response) && response.response[0]?.errorMessage) {
+            errorMsg += " " + response.response.map((r, i) => `\n${i + 1}. ${r.errorMessage}`).join("");
+          } else if (response.exception?.exceptionMessage) {
+            errorMsg += " " + response.exception.exceptionMessage;
+          } else {
+            errorMsg += " خطای نامشخص. لطفاً مجدد تلاش کنید.";
+          }
+      
+          alert(errorMsg);
+        })
+        .catch((err) => {
+          console.error("AJAX error:", err);
+          alert("❌ ارتباط با سرور برقرار نشد.");
+        })
+        .finally(() => {
+          confirmBtn.disabled = false;
+          confirmBtn.innerText = "تایید صدور";
+        });
+      
+
       });
+
     });
   });
-
 });

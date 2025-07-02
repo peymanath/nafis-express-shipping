@@ -21,7 +21,7 @@ if (!$token) {
 }
 
 $provinces = nafis_get_cached_provinces();
-$cities = get_option('nafis_express_cached_cities', []);
+$cities = nafis_get_cached_cities();
 $today = current_time('Y-m-d');
 $selected_city = isset($_GET['city']) ? sanitize_text_field(wp_unslash($_GET['city'])) : '';
 $selected_province = isset($_GET['province_id']) ? sanitize_text_field(wp_unslash($_GET['province_id'])) : '';

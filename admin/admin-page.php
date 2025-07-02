@@ -18,6 +18,7 @@ if (! defined('ABSPATH')) exit;
 global $nafis_global_notice_shown;
 $nafis_global_notice_shown = false;
 
+
 function nafis_express_shipping_render_admin_page()
 {
     global $nafis_global_notice_shown;
@@ -35,8 +36,29 @@ function nafis_express_shipping_render_admin_page()
         ? sanitize_key($_GET['tab'])
         : ($token ? 'barcode' : 'setting');
 
+    echo '<h1 style="margin-top: 20px;">' . esc_html__('Nafis Express Customer Panel', 'nafis-express-shipping') . '</h1>';
+
+    // --- REST API Access Check ---
+    $rest_check_response = wp_remote_get(rest_url(NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '/ping'), [
+        'timeout' => 5,
+        'headers' => ['Accept' => 'application/json']
+    ]);
+
+    if (is_wp_error($rest_check_response) || wp_remote_retrieve_response_code($rest_check_response) >= 400) {
+        echo '<div class="notice notice-error"><p>' .
+        sprintf(
+            esc_html__('❗ REST API access is blocked. Please ensure that the %1$s endpoint (%2$s) is publicly accessible. This is required for Nafis Express to update your data correctly. For more information, please visit %3$s.', 'nafis-express-shipping'),
+            '<code>' . NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '</code>',
+            esc_url(rest_url(NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '/')),
+            '<a href="https://nafisexpress.com" target="_blank">' . __('Nafis Express', 'nafis-express-shipping') . '</a>'
+        ) .
+        '</p></div>';
+    
+        $nafis_global_notice_shown = true;
+    }
 ?>
     <div class="wrap wpp-settings-wrap">
+
         <h2 class="nav-tab-wrapper">
 
             <a href="?page=nafis-express-shipping&tab=barcode"

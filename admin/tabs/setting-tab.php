@@ -5,7 +5,7 @@ global $nafis_global_notice_shown;
 $nafis_global_notice_shown = false;
 
 
-nafis_generate_province_city_js_file();
+// nafis_generate_province_city_js_file();
 
 // --- Handle Login/Logout ---
 $stored = get_option('nafis_express_data');
@@ -30,12 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         [$token, $error_msg] = nafis_handle_login();
         $login_success = $token !== null;
     
-        // if ($login_success) {
+        if ($login_success) {
             nafis_refresh_persistent_filter_data($token);
-        //     $redirect_url = admin_url('admin.php?page=nafis-express-shipping&tab=barcode');
-        //     wp_safe_redirect($redirect_url);
-        //     exit;
-        // }
+            $redirect_url = admin_url('admin.php?page=nafis-express-shipping&tab=barcode');
+            wp_safe_redirect($redirect_url);
+            exit;
+        }
     }
 }
 
@@ -121,6 +121,8 @@ function nafis_handle_login()
         'userName' => $username,
         'password' => $password,
     ]);
+
+    var_dump($res);
 
     if (!$res['success'] || empty($res['data']['token'])) {
         return [null, __('Login failed. Please check your credentials.', 'nafis-express-shipping')];

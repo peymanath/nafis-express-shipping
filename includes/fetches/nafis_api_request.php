@@ -26,9 +26,23 @@ function nafis_api_request($method, $endpoint, $token = null, $params = [], $bod
     if ($method === 'POST' || $method === 'PUT') {
         $args['body'] = wp_json_encode($body ?? []);
     }
+
+    // var_dump($url, array_merge($args, ['method' => strtoupper($method)]));
     
     $response = wp_remote_request($url, array_merge($args, ['method' => strtoupper($method)]));
     
+    if (is_wp_error($response)) {
+        $error_message = $response->get_error_message();
+        // var_dump("❌ WP ERROR: " . $error_message);
+        return ['success' => false, 'data' => null];
+    }
+    
+    $status_code = wp_remote_retrieve_response_code($response);
+    $body_text   = wp_remote_retrieve_body($response);
+    
+    // var_dump("🧪 RESPONSE STATUS: " . var_export($status_code, true));
+    // var_dump("🧪 RESPONSE BODY: " . var_export($body_text, true));
+
     if (is_wp_error($response)) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
             error_log("❌ Nafis API Error ({$endpoint}): " . $response->get_error_message());

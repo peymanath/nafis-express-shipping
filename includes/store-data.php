@@ -8,7 +8,7 @@ function nafis_refresh_persistent_filter_data($token)
 
     nafis_store_statuses_in_db($token);
     nafis_store_provinces_and_cities_in_db($token);
-    nafis_generate_province_city_js_file();
+    // nafis_generate_province_city_js_file();
     nafis_store_branches_in_db($token);
     nafis_store_boxes_in_db($token);
 }
@@ -55,7 +55,7 @@ function nafis_store_provinces_and_cities_in_db($token)
             'id'   => $province['provinceID'],
             'name' => $province['name'],
         ];
-
+    
         foreach ($province['cities'] as $city) {
             $cities[] = [
                 'id'         => $city['cityID'],
@@ -85,22 +85,22 @@ function nafis_store_branches_in_db($token)
 
     update_option('nafis_express_cached_branches', $filtered);
 }
-add_action('admin_post_nafis_download_city_js', 'nafis_generate_province_city_js_file');
-add_action('admin_post_nopriv_nafis_download_city_js', 'nafis_generate_province_city_js_file');
-function nafis_generate_province_city_js_file()
-{
-    ob_clean();
+// add_action('admin_post_nafis_download_city_js', 'nafis_generate_province_city_js_file');
+// add_action('admin_post_nopriv_nafis_download_city_js', 'nafis_generate_province_city_js_file');
+// function nafis_generate_province_city_js_file()
+// {
+//     ob_clean();
 
-    $cities = get_option('nafis_express_cached_cities', []);
-    $js_content = "window.nafisCityList=" . json_encode(
-        $cities,
-        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR
-    ) . ";";
+//     $cities = get_option('nafis_express_cached_cities', []);
+//     $js_content = "window.nafisCityList=" . json_encode(
+//         $cities,
+//         JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR
+//     ) . ";";
 
-    header('Content-Type: application/javascript; charset=utf-8');
-    header('Content-Disposition: attachment; filename="province-city-data.js"');
-    header('Content-Length: ' . strlen($js_content));
+//     header('Content-Type: application/javascript; charset=utf-8');
+//     header('Content-Disposition: attachment; filename="province-city-data.js"');
+//     header('Content-Length: ' . strlen($js_content));
 
-    echo $js_content;
-    exit;
-}
+//     echo $js_content;
+//     exit;
+// }

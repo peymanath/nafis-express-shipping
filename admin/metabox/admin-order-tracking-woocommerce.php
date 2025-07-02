@@ -39,12 +39,11 @@ function nafis_order_barcodes_meta_box($post)
 {
 
     $order_id =  isset($_GET['test_order_id']) ? sanitize_key($_GET['test_order_id']) : (int) $post->ID;
-    $user_id = get_current_user_id();
     $user_barcdes = get_post_meta($order_id, "nafis-express-barcode");
-    $token = nafis_get_valid_token($user_id);
+    $token = nafis_get_valid_token(get_current_user_id());
 
     if (!empty($user_barcdes)) {
-        // var_dump($user_barcdes);
+        var_dump($user_barcdes);
     }
 
 
