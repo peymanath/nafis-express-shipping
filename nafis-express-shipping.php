@@ -70,20 +70,6 @@ if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTT
     define('NAFIS_EXPRESS_SHIPPING_BASE_API', 'https://api.nafisexpress.com');
 }
 
-// Load plugin translations
-add_action('plugins_loaded', function () {
-    /**
-     * Load plugin textdomain for manual installations (non-WordPress.org)
-     *
-     * WordPress automatically loads translations for plugins hosted on WordPress.org (since v4.6),
-     * but if this plugin is installed manually (e.g., from GitHub or zip upload),
-     * this ensures translation files in /languages are still loaded correctly.
-     *
-     * More info: https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
-     */
-    load_plugin_textdomain('nafis-express-shipping', false, dirname(plugin_basename(__FILE__)) . '/languages');
-});
-
 //Add link to plugins row meta
 add_filter('plugin_row_meta', function ($links, $file) {
     if ($file === plugin_basename(__FILE__)) {

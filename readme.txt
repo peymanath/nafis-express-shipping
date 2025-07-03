@@ -17,6 +17,23 @@ This initial version lets store managers **view a list of exited orders** and th
 
 ⚠️ *A valid token is required to use this feature.*
 
+== External Services ==
+
+This plugin connects to the official Nafis Express API (https://api.nafisexpress.com) in order to retrieve real-time shipping data such as exited orders, tracking barcodes, and city/province information.
+
+The following data may be sent to the Nafis Express API:
+- API authentication token (provided by the user)
+- WooCommerce order IDs (only for exited orders)
+- User-selected province and city filters (for location-based shipping lookups)
+
+Data is only sent when an admin user logs in via the plugin settings and accesses barcode/order-related features. No data is sent without explicit admin interaction.
+
+All data is transmitted over HTTPS and securely processed on Nafis Express’s private infrastructure.
+
+**Service Provider**: Nafis Express 
+- Privacy Policy: https://nafisexpress.com/en/rules
+
+
 == Installation ==
 
 1. Upload the plugin to the `/wp-content/plugins/` directory.

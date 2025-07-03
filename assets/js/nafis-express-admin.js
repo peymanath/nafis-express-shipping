@@ -62,20 +62,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const header = `
                         <p><strong>شرکت:</strong> ${data.companyTitle}</p>
-                        <p><strong>گیرنده:</strong> ${
-                          data.receiverName
-                        } | موبایل: ${data.receiverMobile}</p>
-                        ${
-                          !!data.agentName
-                            ? `<p><strong>مامور توزیع:</strong> ${data.agentName}</p>`
-                            : ""
-                        }
-                        <p><strong>مبداً:</strong> ${
-                          data.startCity
-                        } → <strong>مقصد:</strong> ${data.finalCity}</p>
-                        <p><strong>شماره سفارش:</strong> ${
-                          data.orderID
-                        } | وزن: ${data.weight} گرم</p>
+                        <p><strong>گیرنده:</strong> ${data.receiverName
+            } | موبایل: ${data.receiverMobile}</p>
+                        ${!!data.agentName
+              ? `<p><strong>مامور توزیع:</strong> ${data.agentName}</p>`
+              : ""
+            }
+                        <p><strong>مبداً:</strong> ${data.startCity
+            } → <strong>مقصد:</strong> ${data.finalCity}</p>
+                        <p><strong>شماره سفارش:</strong> ${data.orderID
+            } | وزن: ${data.weight} گرم</p>
                         <hr>
                     `;
 
@@ -90,22 +86,19 @@ document.addEventListener("DOMContentLoaded", () => {
                             </thead>
                             <tbody>
                                 ${data.logs
-                                  .map(
-                                    (log) => `
+              .map(
+                (log) => `
                                     <tr>
-                                        <td style="border-bottom:1px solid #eee; padding:6px;">${
-                                          log.statusDateTimeString
-                                        }</td>
-                                        <td style="border-bottom:1px solid #eee; padding:6px;">${
-                                          log.statusTitle
-                                        }</td>
-                                        <td style="border-bottom:1px solid #eee; padding:6px;">${
-                                          log.branchTitle || "-"
-                                        }</td>
+                                        <td style="border-bottom:1px solid #eee; padding:6px;">${log.statusDateTimeString
+                  }</td>
+                                        <td style="border-bottom:1px solid #eee; padding:6px;">${log.statusTitle
+                  }</td>
+                                        <td style="border-bottom:1px solid #eee; padding:6px;">${log.branchTitle || "-"
+                  }</td>
                                     </tr>
                                 `
-                                  )
-                                  .join("")}
+              )
+              .join("")}
                             </tbody>
                         </table>
                     `;
@@ -166,15 +159,15 @@ document.addEventListener("DOMContentLoaded", () => {
           </thead>
           <tbody>
             ${data.products
-              .map(
-                (p) => `
+          .map(
+            (p) => `
               <tr>
                 <td style="border-bottom:1px solid #eee; padding:6px;">${p.name}</td>
                 <td style="border-bottom:1px solid #eee; padding:6px;">${p.qty}</td>
               </tr>
             `
-              )
-              .join("")}
+          )
+          .join("")}
           </tbody>
         </table>
       `;
@@ -189,4 +182,57 @@ document.addEventListener("DOMContentLoaded", () => {
       content.innerHTML = `<h3>اطلاعات سفارش</h3>${infoTable}<h3>محصولات</h4>${productList}${footer}`;
     });
   });
+
+  // Province-City Dropdown Handler
+  const provinceSelect = document.getElementById('province-select');
+  const citySelect = document.getElementById('city-select');
+
+  if (typeof nafisProvinceCityData !== 'undefined') {
+    const nafisCities = nafisProvinceCityData.cities || [];
+    const selectedCity = nafisProvinceCityData.selectedCity || '';
+    const selectedProvince = nafisProvinceCityData.selectedProvince || '';
+
+    function updateCityOptions(provinceID) {
+      citySelect.innerHTML = '<option value="">' + nafisProvinceCityData.labels.allCities + '</option>';
+      const filteredCities = nafisCities.filter(city => city.provinceID == provinceID);
+
+      filteredCities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city.id;
+        option.textContent = city.name;
+        if (city.id == selectedCity) option.selected = true;
+        citySelect.appendChild(option);
+      });
+
+      citySelect.disabled = filteredCities.length === 0;
+    }
+
+    provinceSelect?.addEventListener('change', function () {
+      updateCityOptions(this.value);
+    });
+
+    if (selectedProvince) {
+      updateCityOptions(selectedProvince);
+    }
+  }
+
+  // Filter remover
+  document.querySelectorAll('.nafis-remove-filter').forEach(el => {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      const param = this.dataset.filter;
+      const url = new URL(window.location.href);
+
+      if (param === 'date_from') {
+        url.searchParams.set('date_from', '');
+      } else {
+        url.searchParams.delete(param);
+      }
+
+      window.location.href = url.toString();
+    });
+  });
+
+  // Enable nav tabs on login
+  document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('disabled'));
 });

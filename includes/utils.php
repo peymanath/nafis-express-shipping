@@ -13,6 +13,10 @@ function nafis_get_cached_provinces()
 {
     return get_option('nafis_express_cached_provinces', []);
 }
+function nafis_get_cached_cities()
+{
+    return get_option('nafis_express_cached_cities', []);
+}
 function nafis_get_cities_by_province($province_id)
 {
     $all = get_option('nafis_express_cached_cities', []);

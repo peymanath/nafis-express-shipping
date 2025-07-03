@@ -134,11 +134,6 @@ function nafis_show_logged_in_user_ui($token, $just_logged_in = false)
             <?php endif; ?>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('disabled'));
-        });
-    </script>
 <?php
 }
 
