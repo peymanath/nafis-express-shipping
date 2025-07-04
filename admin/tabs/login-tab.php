@@ -1,6 +1,21 @@
-<?php
-if (! defined('ABSPATH')) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
+
+// Check Logout Nonce
+Nafis_Nonce::check_post_security(
+    'nafis_logout_action',
+    'nafis_logout_nonce',
+    'manage_woocommerce',
+    'nafis_logout_submit'
+);
+
+// Check Logoin Nonce
+Nafis_Nonce::check_post_security(
+    'nafis_login_action',
+    'nafis_login_nonce',
+    'manage_woocommerce',
+    'nafis_login_submit'
+);
 
 global $nafis_global_notice_shown;
 $nafis_global_notice_shown = false;
@@ -12,19 +27,16 @@ $refresh = is_array($stored) ? sanitize_text_field($stored['refreshToken'] ?? ''
 $login_success = false;
 $error_msg = null;
 
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['nafis_logout_submit'])) {
-        check_admin_referer('nafis_logout_action', 'nafis_logout_nonce');
-        nafis_handle_logout();
-        $token = null;
-    }
-
-    if (isset($_POST['nafis_login_submit'])) {
-        check_admin_referer('nafis_login_action', 'nafis_login_nonce');
-        [$token, $error_msg] = nafis_handle_login();
-        $login_success = $token !== null;
-    }
+if (isset($_POST['nafis_logout_submit'])) {
+    nafis_handle_logout();
+    $token = null;
 }
+
+if (isset($_POST['nafis_login_submit'])) {
+    [$token, $error_msg] = nafis_handle_login();
+    $login_success = $token !== null;
+}
+
 
 // If the token is valid, show user panel
 if ($token && !nafis_is_token_expired($token)) {
@@ -118,19 +130,19 @@ function nafis_show_logged_in_user_ui($token, $just_logged_in = false)
     $nafis_global_notice_shown = true;
 ?>
     <h2 class="hndle" style="display: flex; justify-content: space-between; align-items: center;">
-        <span><?php echo esc_html__('User Information', 'nafis-express-shipping'); ?></span>
+        <span><?= esc_html__('User Information', 'nafis-express-shipping'); ?></span>
         <form method="post" style="margin: 0;">
             <?php wp_nonce_field('nafis_logout_action', 'nafis_logout_nonce'); ?>
             <input type="submit" name="nafis_logout_submit" class="button button-secondary"
-                value="<?php echo esc_attr__('Logout', 'nafis-express-shipping'); ?>">
+                value="<?= esc_attr__('Logout', 'nafis-express-shipping'); ?>">
         </form>
 
     </h2>
     <div class="postbox">
         <div class="inside">
             <?php if (!empty($data['roles'])) : ?>
-                <p><strong><?php echo esc_html__('Roles:', 'nafis-express-shipping'); ?></strong>
-                    <?php echo esc_html($data['roles']); ?></p>
+                <p><strong><?= esc_html__('Roles:', 'nafis-express-shipping'); ?></strong>
+                    <?= esc_html($data['roles']); ?></p>
             <?php endif; ?>
         </div>
     </div>

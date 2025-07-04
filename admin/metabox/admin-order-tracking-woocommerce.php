@@ -1,28 +1,8 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
-// 🔐 Added nonce and permission check
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nafis_nonce'])) {
-    if (
-        ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nafis_nonce'])), 'nafis_nonce')
-    ) {
-        wp_die('Invalid nonce');
-    }
-
-    if (! current_user_can('manage_woocommerce')) {
-        wp_die('Insufficient permissions');
-    }
-}
-
-
-if ( ! defined( 'ABSPATH' ) ) exit;
-
-
-add_action('add_meta_boxes', 'nafis_add_order_meta_box');
-function nafis_add_order_meta_box()
-{
+add_action('add_meta_boxes', function () {
     $screen_id = get_current_screen()->id;
 
-    // فقط اگر در صفحه سفارشات ووکامرس هستیم
     if (strpos($screen_id, 'shop-order') !== false || strpos($screen_id, 'wc-orders') !== false) {
         add_meta_box(
             'nafis_order_barcodes',
@@ -33,7 +13,8 @@ function nafis_add_order_meta_box()
             'default'
         );
     }
-}
+});
+
 
 function nafis_order_barcodes_meta_box($post)
 {
@@ -69,13 +50,10 @@ function nafis_order_barcodes_meta_box($post)
             $order_date = current_time('Y-m-d', (int) $order_date);
         }
 
-        // ساخت URL با تاریخ فیلتر شده
         $filter_url = add_query_arg([
             'page'       => 'nafis-express-shipping',
             'tab'        => 'barcode',
-            // 'order_id'   => $order_id,
             'date_from'  => $order_date,
-            // 'date_to'    => $order_date,
         ], admin_url('admin.php'));
 
         echo '<p style="margin-bottom: 0.5em; font-weight: bold;">'
@@ -98,8 +76,8 @@ function nafis_order_barcodes_meta_box($post)
 ?>
         <div class="nafis-barcode-box" style="border: 1px solid #ccc; border-radius: 6px; padding: 10px; margin: 16px  0px; ">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <strong><?php echo esc_html($barcode); ?></strong>
-                <button type="button" class="button track-barcode-btn" data-barcode="<?php echo esc_attr($barcode); ?>">
+                <strong><?= esc_html($barcode); ?></strong>
+                <button type="button" class="button track-barcode-btn" data-barcode="<?= esc_attr($barcode); ?>">
                     <?php esc_html_e('View Tracking', 'nafis-express-shipping'); ?>
                 </button>
             </div>
@@ -107,8 +85,6 @@ function nafis_order_barcodes_meta_box($post)
         </div>
     <?php
     }
-
-    // Include localized nonce and ajaxurl for JS
     ?>
 <?php
 }

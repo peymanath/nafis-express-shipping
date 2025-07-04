@@ -1,5 +1,4 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 function nafis_fetch_boxes_from_api($token) {

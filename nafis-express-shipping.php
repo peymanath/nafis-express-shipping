@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * This file is part of the Nafis Express Shipping plugin.
@@ -37,8 +37,6 @@
  * Text Domain:       nafis-express-shipping
  * Domain Path:       /languages
  */
-
-if (!defined('ABSPATH')) exit;
 
 // Define plugin path
 define('NAFIS_EXPRESS_SHIPPING_PATH', plugin_dir_path(__FILE__));
@@ -81,6 +79,8 @@ add_filter('plugin_row_meta', function ($links, $file) {
 
 // Load core plugin files
 require_once NAFIS_EXPRESS_SHIPPING_INC . 'class-loader.php';
+
+require_once NAFIS_EXPRESS_SHIPPING_INC . 'nonce-helpet.php';
 
 // Activation Hook
 define('NAFIS_EXPRESS_SHIPPING_PLUGIN_FILE', __FILE__);

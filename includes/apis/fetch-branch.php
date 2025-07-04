@@ -1,5 +1,4 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 function nafis_fetch_branches_from_api()

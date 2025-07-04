@@ -1,11 +1,9 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 add_action('wp_ajax_nafis_track_barcode', function () {
-    check_ajax_referer('nafis_nonce', 'nonce');
-    if (!current_user_can('manage_woocommerce')) {
-        wp_send_json_error(['message' => 'دسترسی غیرمجاز.']);
+    if (!Nafis_Nonce::validate_ajax('nafis_track_nonce', 'nafis_track_nonce')) {
+        wp_send_json_error(['message' => 'Invalid nonce'], 403);
     }
 
     $barcode = sanitize_text_field(wp_unslash($_GET['barcode'] ?? ''));
@@ -26,7 +24,8 @@ add_action('wp_ajax_nafis_track_barcode', function () {
 
 function nafis_fetch_exited_orders($token, $order_id = null)
 {
-    $current_page = isset($_GET['paged']) ? max(1, intval(wp_unslash($_GET['paged']))) : 1;
+    $paged_raw = isset($_GET['paged']) ? wp_unslash($_GET['paged']) : '';
+    $current_page = max(1, absint($paged_raw));
 
     $query = [
         'PageIndex' => $current_page,
@@ -79,8 +78,9 @@ function nafis_fetch_exited_orders($token, $order_id = null)
 
     if (!$result['success']) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('⚠️ Failed to fetch exited orders: ' . print_r($result['data'], true));
-        }
+            $log_data = is_array($result['data']) ? json_encode($result['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : (string) $result['data'];
+            error_log('⚠️ Failed to fetch exited orders: ' . $log_data);
+        }        
         return ['data' => [], 'total' => 0];
     }
 
@@ -89,108 +89,3 @@ function nafis_fetch_exited_orders($token, $order_id = null)
         'total' => $result['data']['totalRecords'] ?? 0,
     ];
 }
-
-
-// array(2) {
-//   ["success"]=>
-//   bool(true)
-//   ["data"]=>
-//   array(9) {
-//     ["companyTitle"]=>
-//     string(44) "سلامت تدبیر اصیل مهر آسا"
-//     ["startCity"]=>
-//     string(44) "سلامت تدبیر اصیل مهر آسا"
-//     ["finalCity"]=>
-//     string(12) "اصفهان"
-//     ["receiverName"]=>
-//     string(21) "محسن  عزیزی "
-//     ["receiverMobile"]=>
-//     string(11) "09132011391"
-//     ["orderID"]=>
-//     int(9239662)
-//     ["weight"]=>
-//     int(7140)
-//     ["agentName"]=>
-//     string(23) "محمدرضا خلجی"
-//     ["logs"]=>
-//     array(7) {
-//       [0]=>
-//       array(4) {
-//         ["branchTitle"]=>
-//         string(0) ""
-//         ["statusTitle"]=>
-//         string(28) "ثبت اولیه بارکد"
-//         ["statusDateTime"]=>
-//         string(23) "2025-06-15T12:47:23.297"
-//         ["statusDateTimeString"]=>
-//         string(19) "1404/03/25 12:47:23"
-//       }
-//       [1]=>
-//       array(4) {
-//         ["branchTitle"]=>
-//         string(34) "شعبه مرکزی اشتهارد"
-//         ["statusTitle"]=>
-//         string(22) "ورود به شعبه"
-//         ["statusDateTime"]=>
-//         string(23) "2025-06-15T12:47:25.513"
-//         ["statusDateTimeString"]=>
-//         string(19) "1404/03/25 12:47:25"
-//       }
-//       [2]=>
-//       array(4) {
-//         ["branchTitle"]=>
-//         string(0) ""
-//         ["statusTitle"]=>
-//         string(28) "مانیفست از شعبه"
-//         ["statusDateTime"]=>
-//         string(23) "2025-06-15T15:10:35.427"
-//         ["statusDateTimeString"]=>
-//         string(19) "1404/03/25 15:10:35"
-//       }
-//       [3]=>
-//       array(4) {
-//         ["branchTitle"]=>
-//         string(0) ""
-//         ["statusTitle"]=>
-//         string(43) "در حال حرکت به شعبه مقصد"
-//         ["statusDateTime"]=>
-//         string(23) "2025-06-15T15:10:35.427"
-//         ["statusDateTimeString"]=>
-//         string(19) "1404/03/25 15:10:35"
-//       }
-//       [4]=>
-//       array(4) {
-//         ["branchTitle"]=>
-//         string(34) "نفیس اکسپرس اصفهان"
-//         ["statusTitle"]=>
-//         string(22) "ورود به شعبه"
-//         ["statusDateTime"]=>
-//         string(22) "2025-06-16T07:12:25.39"
-//         ["statusDateTimeString"]=>
-//         string(19) "1404/03/26 07:12:25"
-//       }
-//       [5]=>
-//       array(4) {
-//         ["branchTitle"]=>
-//         string(34) "نفیس اکسپرس اصفهان"
-//         ["statusTitle"]=>
-//         string(28) "تحویل به راننده"
-//         ["statusDateTime"]=>
-//         string(23) "2025-06-16T09:53:16.033"
-//         ["statusDateTimeString"]=>
-//         string(19) "1404/03/26 09:53:16"
-//       }
-//       [6]=>
-//       array(4) {
-//         ["branchTitle"]=>
-//         string(34) "نفیس اکسپرس اصفهان"
-//         ["statusTitle"]=>
-//         string(55) "تحویل داده شد  (تحویل با کد ملی)"
-//         ["statusDateTime"]=>
-//         string(23) "2025-06-16T18:39:56.133"
-//         ["statusDateTimeString"]=>
-//         string(19) "1404/03/26 18:39:56"
-//       }
-//     }
-//   }
-// }

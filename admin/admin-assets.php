@@ -1,6 +1,5 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
-if (!defined('ABSPATH')) exit;
 
 /**
  * Load admin assets for Nafis Express Shipping plugin
@@ -26,8 +25,8 @@ add_action('admin_enqueue_scripts', function () {
     // Inject JS variables before the script
     wp_add_inline_script('nafis-express-admin-script', 'const nafisProvinceCityData = ' . json_encode([
         'cities'           => nafis_get_cached_cities(),
-        'selectedCity'     => $_GET['city'] ?? '',
-        'selectedProvince' => $_GET['province'] ?? '',
+        'selectedCity'     => isset($_GET['city']) ? sanitize_text_field(wp_unslash($_GET['city'])) : '',
+        'selectedProvince' => isset($_GET['province']) ? sanitize_text_field(wp_unslash($_GET['province'])) : '',
         'labels'           => [
             'allCities' => __('همه شهرها', 'nafis-express-shipping'),
         ],

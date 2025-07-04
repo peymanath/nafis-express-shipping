@@ -1,5 +1,4 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 function nafis_refresh_persistent_filter_data($token) {

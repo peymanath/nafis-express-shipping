@@ -1,5 +1,4 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 register_activation_hook(NAFIS_EXPRESS_SHIPPING_PLUGIN_FILE, function () {
     $defaults = [

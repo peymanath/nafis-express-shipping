@@ -1,5 +1,4 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Load helpers
 require_once NAFIS_EXPRESS_SHIPPING_INC . 'class-loader.php';

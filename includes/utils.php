@@ -1,5 +1,4 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 function nafis_get_cached_boxes() {
     return get_option('nafis_express_cached_boxes', []);

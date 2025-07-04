@@ -1,5 +1,4 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 function nafis_api_request($method, $endpoint, $token = null, $params = [], $body = null, $timeout = 10) {

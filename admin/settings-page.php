@@ -1,6 +1,4 @@
-<?php
-
-if (!defined('ABSPATH')) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Register a custom admin menu for Nafis Express Shipping

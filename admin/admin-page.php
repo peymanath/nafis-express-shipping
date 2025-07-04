@@ -1,18 +1,4 @@
-<?php
-
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nafis_nonce'])) {
-    if (
-        ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nafis_nonce'])), 'nafis_nonce')
-    ) {
-        wp_die('Invalid nonce');
-    }
-
-    if (!current_user_can('manage_woocommerce')) {
-        wp_die(esc_html__('You do not have permission to access this section.', 'nafis-express-shipping'));
-    }
-}
-
-if (! defined('ABSPATH')) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 global $nafis_global_notice_shown;
@@ -36,13 +22,13 @@ function nafis_express_shipping_render_admin_page()
     <div class="wrap wpp-settings-wrap">
         <h2 class="nav-tab-wrapper">
             <a href="?page=nafis-express-shipping&tab=login"
-                class="nav-tab <?php echo $active_tab === 'login' ? 'nav-tab-active' : ''; ?>">
-                <?php echo esc_html__('Login', 'nafis-express-shipping'); ?>
+                class="nav-tab <?= esc_attr($active_tab === 'login' ? 'nav-tab-active' : ''); ?>">
+                <?= esc_html__('Login', 'nafis-express-shipping'); ?>
             </a>
 
             <a href="?page=nafis-express-shipping&tab=barcode"
-                class="nav-tab <?php echo $active_tab === 'barcode' ? 'nav-tab-active' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
-                <?php echo esc_html__('Barcodes', 'nafis-express-shipping'); ?>
+                class="nav-tab <?= esc_attr($active_tab === 'barcode' ? 'nav-tab-active' : ''); ?><?= esc_attr($token ? '' : ' disabled'); ?>">
+                <?= esc_html__('Barcodes', 'nafis-express-shipping'); ?>
             </a>
         </h2>
 
@@ -52,9 +38,6 @@ function nafis_express_shipping_render_admin_page()
                 case 'login':
                     require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/login-tab.php';
                     break;
-                // case 'branches':
-                //     require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/branches-tab.php';
-                //     break;
                 case 'barcode':
                     require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/barcode-tab.php';
                     break;
