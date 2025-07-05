@@ -11,3 +11,4 @@
 /phpcs.xml export-ignore
 /README.md export-ignore
 /banner-1544x500.png export-ignore
+/.vscode export-ignore

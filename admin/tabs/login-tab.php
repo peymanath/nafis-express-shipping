@@ -1,5 +1,10 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * This file handles nonce validation manually via the Nafis_Nonce class.
+ *
+ * phpcs:ignoreFile WordPress.Security.NonceVerification.Missing
+ */
 
 // Check Logout Nonce
 Nafis_Nonce::check_post_security(
@@ -130,19 +135,19 @@ function nafis_show_logged_in_user_ui($token, $just_logged_in = false)
     $nafis_global_notice_shown = true;
 ?>
     <h2 class="hndle" style="display: flex; justify-content: space-between; align-items: center;">
-        <span><?= esc_html__('User Information', 'nafis-express-shipping'); ?></span>
+        <span><?php echo esc_html__('User Information', 'nafis-express-shipping'); ?></span>
         <form method="post" style="margin: 0;">
             <?php wp_nonce_field('nafis_logout_action', 'nafis_logout_nonce'); ?>
             <input type="submit" name="nafis_logout_submit" class="button button-secondary"
-                value="<?= esc_attr__('Logout', 'nafis-express-shipping'); ?>">
+                value="<?php echo esc_attr__('Logout', 'nafis-express-shipping'); ?>">
         </form>
 
     </h2>
     <div class="postbox">
         <div class="inside">
             <?php if (!empty($data['roles'])) : ?>
-                <p><strong><?= esc_html__('Roles:', 'nafis-express-shipping'); ?></strong>
-                    <?= esc_html($data['roles']); ?></p>
+                <p><strong><?php echo esc_html__('Roles:', 'nafis-express-shipping'); ?></strong>
+                    <?php echo esc_html($data['roles']); ?></p>
             <?php endif; ?>
         </div>
     </div>

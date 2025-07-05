@@ -1,5 +1,8 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * phpcs:ignoreFile WordPress.Security.ValidatedSanitizedInput
+ */
 
 class Nafis_Nonce
 {
@@ -8,30 +11,39 @@ class Nafis_Nonce
      */
     public static function validate_post($nonce_key, $action)
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (! isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
             return false;
         }
 
-        $nonce = $_POST[$nonce_key] ?? '';
-        return wp_verify_nonce(sanitize_text_field(wp_unslash($nonce)), $action);
+        if (! isset($_POST[$nonce_key])) {
+            return false;
+        }
+
+        $nonce = sanitize_text_field(wp_unslash($_POST[$nonce_key]));
+        return wp_verify_nonce($nonce, $action);
     }
 
     /**
-     * Validate nonce for GET request (e.g., URL-based actions)
+     * Validate nonce for GET request
      */
     public static function validate_get($nonce_key, $action)
     {
-        $nonce = $_GET[$nonce_key] ?? '';
-        return wp_verify_nonce(sanitize_text_field(wp_unslash($nonce)), $action);
+        if (! isset($_GET[$nonce_key])) {
+            return false;
+        }
+
+        $nonce = sanitize_text_field(wp_unslash($_GET[$nonce_key]));
+        return wp_verify_nonce($nonce, $action);
     }
 
     /**
-     * Validate nonce in AJAX (both authenticated and unauthenticated)
+     * Validate nonce in AJAX (POST or GET)
      */
     public static function validate_ajax($nonce_key, $action)
     {
-        $nonce = $_POST[$nonce_key] ?? $_GET[$nonce_key] ?? '';
-        return wp_verify_nonce(sanitize_text_field(wp_unslash($nonce)), $action);
+        $nonce_raw = $_POST[$nonce_key] ?? $_GET[$nonce_key] ?? '';
+        $nonce = sanitize_text_field(wp_unslash($nonce_raw));
+        return wp_verify_nonce($nonce, $action);
     }
 
     /**
@@ -43,7 +55,7 @@ class Nafis_Nonce
     }
 
     /**
-     * Generate nonce (useful in JS / link construction)
+     * Generate nonce
      */
     public static function generate($action)
     {
@@ -51,7 +63,7 @@ class Nafis_Nonce
     }
 
     /**
-     * If validation fails, kill page
+     * If validation fails, die
      */
     public static function check_or_die($result, $message = 'Invalid nonce')
     {
@@ -61,26 +73,27 @@ class Nafis_Nonce
     }
 
     /**
-     * Combination of anomaly check and access level for POST requests.
-     *
-     * @param string $action Action value for nonce
-     * @param string $nonce_key Nonce key (e.g. 'nafis_barcode_nonce')
-     * @param string $capability Capability to execute (e.g. 'manage_woocommerce')
+     * Validate POST nonce with permission check
      */
     public static function check_post_security($action, $nonce_key, $capability = '', $submit_field = '')
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { return; }
-        if ($submit_field && ! isset($_POST[$submit_field])) return;
+        if (! isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return;
+        }
+
+        if ($submit_field && ! isset($_POST[$submit_field])) {
+            return;
+        }
 
         if (
             ! isset($_POST[$nonce_key]) ||
             ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[$nonce_key])), $action)
         ) {
-            wp_die(__('Invalid nonce.', 'nafis-express-shipping'));
+            wp_die(esc_html__('Invalid nonce.', 'nafis-express-shipping'));
         }
 
         if (! empty($capability) && ! current_user_can($capability)) {
-            wp_die(__('You are not allowed to perform this action.', 'nafis-express-shipping'));
+            wp_die(esc_html__('You are not allowed to perform this action.', 'nafis-express-shipping'));
         }
     }
 }

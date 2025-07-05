@@ -12,7 +12,7 @@ $table->prepare_items();
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?= esc_html__('شعب نفیس اکسپرس', 'nafis-express-shipping'); ?></h1>
+    <h1 class="wp-heading-inline"><?php echo esc_html__('شعب نفیس اکسپرس', 'nafis-express-shipping'); ?></h1>
     <hr class="wp-header-end">
     <?php $table->display(); ?>
 </div>

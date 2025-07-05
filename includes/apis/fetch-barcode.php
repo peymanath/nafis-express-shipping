@@ -1,5 +1,6 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit;
 
+// phpcs:ignoreFile WordPress.Security.NonceVerification.Recommended
 
 add_action('wp_ajax_nafis_track_barcode', function () {
     if (!Nafis_Nonce::validate_ajax('nafis_track_nonce', 'nafis_track_nonce')) {

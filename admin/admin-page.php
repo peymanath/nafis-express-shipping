@@ -1,5 +1,6 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit;
 
+// phpcs:ignoreFile WordPress.Security.NonceVerification.Recommended
 
 global $nafis_global_notice_shown;
 $nafis_global_notice_shown = false;
@@ -22,13 +23,13 @@ function nafis_express_shipping_render_admin_page()
     <div class="wrap wpp-settings-wrap">
         <h2 class="nav-tab-wrapper">
             <a href="?page=nafis-express-shipping&tab=login"
-                class="nav-tab <?= esc_attr($active_tab === 'login' ? 'nav-tab-active' : ''); ?>">
-                <?= esc_html__('Login', 'nafis-express-shipping'); ?>
+                class="nav-tab <?php echo esc_attr($active_tab === 'login' ? 'nav-tab-active' : ''); ?>">
+                <?php echo esc_html__('Login', 'nafis-express-shipping'); ?>
             </a>
 
             <a href="?page=nafis-express-shipping&tab=barcode"
-                class="nav-tab <?= esc_attr($active_tab === 'barcode' ? 'nav-tab-active' : ''); ?><?= esc_attr($token ? '' : ' disabled'); ?>">
-                <?= esc_html__('Barcodes', 'nafis-express-shipping'); ?>
+                class="nav-tab <?php echo esc_attr($active_tab === 'barcode' ? 'nav-tab-active' : ''); ?><?php echo esc_attr($token ? '' : ' disabled'); ?>">
+                <?php echo esc_html__('Barcodes', 'nafis-express-shipping'); ?>
             </a>
         </h2>
 

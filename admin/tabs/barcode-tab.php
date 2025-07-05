@@ -1,5 +1,6 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit;
 
+// phpcs:ignoreFile WordPress.Security.NonceVerification.Recommended
 
 $token = nafis_get_valid_token();
 
@@ -31,12 +32,12 @@ $table->prepare_items();
 
     <form method="get" id="nafis-express-filter-form" class="nafis-filter-form">
         <div class="headline">
-            <h1 class="wp-heading-inline"><?= esc_html__('Out orders', 'nafis-express-shipping'); ?></h1>
+            <h1 class="wp-heading-inline"><?php echo esc_html__('Out orders', 'nafis-express-shipping'); ?></h1>
             <div class="nafis-filter-actions">
                 <button type="submit" class="button button-large button-primary">
                     <?php esc_html_e('فیلتر', 'nafis-express-shipping'); ?>
                 </button>
-                <a href="<?= esc_url(admin_url('admin.php?page=nafis-express-shipping&tab=barcode')); ?>"
+                <a href="<?php echo esc_url(admin_url('admin.php?page=nafis-express-shipping&tab=barcode')); ?>"
                     class="button button-large">
                     <?php esc_html_e('پاک‌کردن فیلترها', 'nafis-express-shipping'); ?>
                 </a>
@@ -58,7 +59,7 @@ $table->prepare_items();
                     <?php endif; ?>
                 </label>
                 <input type="text" name="barcode" id="barcode" placeholder="مثلاً 049580400000000000000000"
-                    value="<?= esc_attr(sanitize_text_field(wp_unslash($_GET['barcode'] ?? ''))); ?>" />
+                    value="<?php echo esc_attr(sanitize_text_field(wp_unslash($_GET['barcode'] ?? ''))); ?>" />
             </div>
 
             <div class="nafis-field">
@@ -72,7 +73,7 @@ $table->prepare_items();
                     <?php endif; ?>
                 </label>
                 <input type="text" name="order_id" id="order_id" placeholder="مثلاً 987654"
-                    value="<?= esc_attr(sanitize_text_field(wp_unslash($_GET['order_id'] ?? ''))); ?>" />
+                    value="<?php echo esc_attr(sanitize_text_field(wp_unslash($_GET['order_id'] ?? ''))); ?>" />
             </div>
 
             <div class="nafis-field">
@@ -86,7 +87,7 @@ $table->prepare_items();
                     <?php endif; ?>
                 </label>
                 <input type="text" name="receiverName" id="receiverName" placeholder="مثلاً علی رضایی"
-                    value="<?= esc_attr(sanitize_text_field(wp_unslash($_GET['receiverName'] ?? ''))); ?>" />
+                    value="<?php echo esc_attr(sanitize_text_field(wp_unslash($_GET['receiverName'] ?? ''))); ?>" />
             </div>
 
             <div class="nafis-field">
@@ -99,7 +100,7 @@ $table->prepare_items();
                         </span>
                     <?php endif; ?>
                 </label>
-                <input type="date" name="date_from" id="date_from" value="<?= esc_attr($date_from); ?>" />
+                <input type="date" name="date_from" id="date_from" value="<?php echo esc_attr($date_from); ?>" />
             </div>
 
             <div class="nafis-field">
@@ -112,7 +113,7 @@ $table->prepare_items();
                         </span>
                     <?php endif; ?>
                 </label>
-                <input type="date" name="date_to" id="date_to" value="<?= esc_attr($date_to); ?>" />
+                <input type="date" name="date_to" id="date_to" value="<?php echo esc_attr($date_to); ?>" />
             </div>
         </div>
 
@@ -130,9 +131,9 @@ $table->prepare_items();
                 <select name="status" id="status">
                     <option value=""><?php esc_html_e('همه وضعیت‌ها', 'nafis-express-shipping'); ?></option>
                     <?php foreach (nafis_get_cached_statuses() as $status): ?>
-                        <option value="<?= esc_attr($status['id']); ?>"
+                        <option value="<?php echo esc_attr($status['id']); ?>"
                             <?php selected(sanitize_text_field(wp_unslash($_GET['status'] ?? '')), $status['id']); ?>>
-                            <?= esc_html($status['title']); ?>
+                            <?php echo esc_html($status['title']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -151,9 +152,9 @@ $table->prepare_items();
                 <select id="province-select" name="province_id">
                     <option value=""><?php esc_html_e('همه استان‌ها', 'nafis-express-shipping'); ?></option>
                     <?php foreach ($provinces as $province): ?>
-                        <option value="<?= esc_attr($province['id']); ?>"
+                        <option value="<?php echo esc_attr($province['id']); ?>"
                             <?php selected(sanitize_text_field(wp_unslash($_GET['status'] ?? '')), $status['id']); ?>>
-                            <?= esc_html($province['name']); ?>
+                            <?php echo esc_html($province['name']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

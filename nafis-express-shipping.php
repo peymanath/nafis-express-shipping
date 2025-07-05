@@ -62,7 +62,9 @@ define('NAFIS_EXPRESS_SHIPPING_ADMIN', NAFIS_EXPRESS_SHIPPING_PATH . 'admin/');
 // Define URL to the plugin's assets directory
 define('NAFIS_EXPRESS_SHIPPING_ASSETS', NAFIS_EXPRESS_SHIPPING_URL . 'assets/');
 
-if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '.dev') !== false) {
+// Define Api Endpoint
+$host = isset($_SERVER['HTTP_HOST']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST'])) : '';
+if (strpos($host, 'localhost') !== false || strpos($host, '.dev') !== false) {
     define('NAFIS_EXPRESS_SHIPPING_BASE_API', 'https://api.nafisexpress.com');
 } else {
     define('NAFIS_EXPRESS_SHIPPING_BASE_API', 'https://api.nafisexpress.com');

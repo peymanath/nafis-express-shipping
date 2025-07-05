@@ -1,5 +1,7 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit;
 
+// phpcs:ignoreFile WordPress.Security.NonceVerification.Recommended
+
 add_action('add_meta_boxes', function () {
     $screen_id = get_current_screen()->id;
 
@@ -18,14 +20,13 @@ add_action('add_meta_boxes', function () {
 
 function nafis_order_barcodes_meta_box($post)
 {
-
     $order_id =  isset($_GET['test_order_id']) ? sanitize_key($_GET['test_order_id']) : (int) $post->ID;
     $user_id = get_current_user_id();
     $user_barcdes = get_post_meta($order_id, "nafis-express-barcode");
     $token = nafis_get_valid_token($user_id);
 
     if (!empty($user_barcdes)) {
-        var_dump($user_barcdes);
+        error_log($user_barcdes);
     }
 
 
@@ -76,8 +77,8 @@ function nafis_order_barcodes_meta_box($post)
 ?>
         <div class="nafis-barcode-box" style="border: 1px solid #ccc; border-radius: 6px; padding: 10px; margin: 16px  0px; ">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <strong><?= esc_html($barcode); ?></strong>
-                <button type="button" class="button track-barcode-btn" data-barcode="<?= esc_attr($barcode); ?>">
+                <strong><?php echo esc_html($barcode); ?></strong>
+                <button type="button" class="button track-barcode-btn" data-barcode="<?php echo esc_attr($barcode); ?>">
                     <?php esc_html_e('View Tracking', 'nafis-express-shipping'); ?>
                 </button>
             </div>

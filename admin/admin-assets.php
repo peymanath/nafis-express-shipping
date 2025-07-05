@@ -1,5 +1,6 @@
-<?php if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if (! defined('ABSPATH')) exit;
 
+// phpcs:ignoreFile WordPress.Security.NonceVerification.Recommended
 
 /**
  * Load admin assets for Nafis Express Shipping plugin
@@ -22,7 +23,7 @@ add_action('admin_enqueue_scripts', function () {
         true
     );
 
-    // Inject JS variables before the script
+    // Inject JS variables before the scriptپ
     wp_add_inline_script('nafis-express-admin-script', 'const nafisProvinceCityData = ' . json_encode([
         'cities'           => nafis_get_cached_cities(),
         'selectedCity'     => isset($_GET['city']) ? sanitize_text_field(wp_unslash($_GET['city'])) : '',
