@@ -9,7 +9,8 @@ add_action('wp_ajax_nafis_track_barcode', function () {
     }
 
     $barcode = sanitize_text_field(wp_unslash($_GET['barcode'] ?? ''));
-    $token   = get_option('nafis_express_data')['token'] ?? null;
+    $auth = NafisOptionAuthentication::get();
+    $token   = $auth['token'] ?? null;
 
     if (!$barcode || !$token) {
         wp_send_json_error(['message' => 'ورودی نامعتبر.']);

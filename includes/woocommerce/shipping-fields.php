@@ -16,7 +16,7 @@ add_action('woocommerce_product_options_shipping', function () {
         return;
     }
 
-    $boxes = nafis_get_cached_boxes();
+    $boxes = NafisOptionCachedBoxes::get([]);
 
     if (!empty($boxes)) {
         woocommerce_wp_select([

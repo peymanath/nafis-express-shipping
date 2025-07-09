@@ -23,18 +23,18 @@ add_filter(
 add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column, $order) {
     if ($column !== 'nafis_barcode_column') return;
 
-    $options = get_option('nafis_express_shipping_settings', []);
+    $options = NafisOptionSetting::get([]);
     $selected_status = $options['barcode_status'] ?? 'wc-processing';
     $order_status = $order->get_status();
 
 
     $order_id = $order->get_id();
 
-    $nafis_express_data = get_option("nafis_express_data");
-    $boxes = nafis_get_cached_boxes();
+    $auth_data = NafisOptionAuthentication::get();
+    $boxes = NafisOptionCachedBoxes::get([]);
 
-    $provinces     = nafis_get_cached_provinces();
-    $cached_cities = nafis_get_cached_cities();
+    $provinces     = NafisOptionCachedProvinces::get([]);
+    $cached_cities = NafisOptionCachedCities::get([]);
 
     // استان
     $state_raw = $order->get_billing_state() ?: $order->get_shipping_state();
@@ -68,7 +68,7 @@ add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column,
 
     $data = [
         'orderID'           => $order->get_id(),
-        'companyID'         => sanitize_text_field($nafis_express_data['companyID']),
+        'companyID'         => sanitize_text_field($auth_data['companyID']),
         'receiverFirstName' => trim($order->get_billing_first_name() ?: $order->get_shipping_first_name()),
         'receiverLastName'  => trim($order->get_billing_last_name() ?: $order->get_shipping_last_name()),
         'receiverMobile'    => $order->get_billing_phone() ?: $order->get_shipping_phone(),
@@ -129,8 +129,8 @@ add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column,
 
     $disabled_attr = $is_disabled ? 'disabled="disabled"' : '';
     $barcode_icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4h1v16H2V4zm3 0h2v16H5V4zm4 0h1v16H9V4zm2 0h1v16h-1V4zm3 0h2v16h-2V4zm4 0h1v16h-1V4zm3 0h1v16h-1V4z"/></svg>';
-   
- printf(
+
+    printf(
         '<div style="display:flex; gap:6px;">
         <button type="button" class="button nafis-barcode-btn" %s 
             data-order="%s" data-order-id="%d" title="%s"
@@ -173,7 +173,7 @@ add_action('wp_ajax_nafis_issue_barcode', function () {
         wp_send_json_error(['message' => 'payload نامعتبر است']);
     }
 
-    $token = get_option('nafis_express_data')['token'] ?? null;
+    $token = NafisOptionAuthentication::get()['token'] ?? null;
     if (!$token) {
         wp_send_json_error(['message' => 'توکن یافت نشد']);
     }

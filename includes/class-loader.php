@@ -12,6 +12,13 @@ require_once NAFIS_EXPRESS_SHIPPING_INC . 'utils.php';
 add_action('plugins_loaded', function () {
     // Only run in admin
     if (class_exists('WooCommerce')) {
+        
+        require_once NAFIS_EXPRESS_SHIPPING_INC_OPTIONS . 'class-nafis-option-base.php';
+        require_once NAFIS_EXPRESS_SHIPPING_INC_FETCH . 'nafis_api_request.php';
+        require_once NAFIS_EXPRESS_SHIPPING_INC_API . "class-nafis-api-loader.php";
+        require_once NAFIS_EXPRESS_SHIPPING_INC . 'customer-assets.php';
+        require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'replace-city-province.php';
+        
         if (is_admin()) {
             // Check if WooCommerce is active
             require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'admin-assets.php';
@@ -26,10 +33,7 @@ add_action('plugins_loaded', function () {
             require_once NAFIS_EXPRESS_SHIPPING_INC_FETCH . 'fetch-barcode.php';
         }
         
-        require_once NAFIS_EXPRESS_SHIPPING_INC_FETCH . 'nafis_api_request.php';
-        require_once NAFIS_EXPRESS_SHIPPING_INC_API . "api-config.php";
-        require_once NAFIS_EXPRESS_SHIPPING_INC . 'customer-assets.php';
-        require_once NAFIS_EXPRESS_SHIPPING_INC_WOO . 'replace-city-province.php';
+
     } else {
         add_action('admin_notices', function () {
             echo '<div class="notice notice-error"><p><strong>' .

@@ -6,7 +6,7 @@ register_activation_hook(NAFIS_EXPRESS_SHIPPING_PLUGIN_FILE, function () {
         'barcode_status' => 'wc-processing',
     ];
 
-    $current = get_option('nafis_express_shipping_settings', []);
+    $current = NafisOptionSetting::get([]);
 
     if (!is_array($current)) {
         $current = [];
@@ -22,6 +22,6 @@ register_activation_hook(NAFIS_EXPRESS_SHIPPING_PLUGIN_FILE, function () {
     }
 
     if ($updated) {
-        update_option('nafis_express_shipping_settings', $current);
+        NafisOptionSetting::set($current);
     }
 });

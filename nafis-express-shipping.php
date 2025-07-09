@@ -58,6 +58,9 @@ define('NAFIS_EXPRESS_SHIPPING_INC_FETCH', NAFIS_EXPRESS_SHIPPING_INC . 'fetches
 // Define path to the includes directory Apis
 define('NAFIS_EXPRESS_SHIPPING_INC_API', NAFIS_EXPRESS_SHIPPING_INC . 'apis/');
 
+// Define path to the includes directory Wp-Options
+define('NAFIS_EXPRESS_SHIPPING_INC_OPTIONS', NAFIS_EXPRESS_SHIPPING_INC . 'options/');
+
 // Define path to the includes directory Actions
 define('NAFIS_EXPRESS_SHIPPING_INC_ACTIONS', NAFIS_EXPRESS_SHIPPING_INC . 'actions/');
 

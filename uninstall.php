@@ -7,5 +7,5 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 }
 
 // Optional: delete plugin options
-delete_option('nafis_express_data');
+NafisOptionAuthentication::delete();
 delete_option('nafis_express_settings');

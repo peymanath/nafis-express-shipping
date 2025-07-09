@@ -8,7 +8,7 @@ $nafis_global_notice_shown = false;
 // nafis_generate_province_city_js_file();
 
 // --- Handle Login/Logout ---
-$stored = get_option('nafis_express_data');
+$stored = NafisOptionAuthentication::get();
 $token = is_array($stored) ? sanitize_text_field($stored['token'] ?? '') : null;
 $refresh = is_array($stored) ? sanitize_text_field($stored['refreshToken'] ?? '') : null;
 
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // --- Login Check ---
 if ($token && !nafis_is_token_expired($token)) {
 
-    $data = get_option("nafis_express_data");
+    $data = NafisOptionAuthentication::get();
 
     // --- User Info Box (Redesigned) ---
     echo '<h2>' . esc_html__('User Information', 'nafis-express-shipping') . '</h2>';
@@ -132,7 +132,7 @@ function nafis_handle_login()
     $payload_json = base64_decode(strtr($parts[1], '-_', '+/'));
     $payload = json_decode($payload_json, true);
 
-    update_option('nafis_express_data', [
+    NafisOptionAuthentication::set([
         'token'        => sanitize_text_field($res['data']['token']),
         'refreshToken' => sanitize_text_field($res['data']['refereshToken'] ?? ''),
         'companyID'    => sanitize_text_field($payload['companyID']),

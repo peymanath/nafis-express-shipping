@@ -56,7 +56,7 @@ function nafis_express_shipping_settings_validate($input) {
  */
 function nafis_render_barcode_status_field() {
     $statuses = wc_get_order_statuses();
-    $options = get_option('nafis_express_shipping_settings', []);
+    $options = NafisOptionSetting::get([]);
 
     // If not set, fallback to 'wc-processing' as default
     $selected = $options['barcode_status'] ?? 'wc-processing';

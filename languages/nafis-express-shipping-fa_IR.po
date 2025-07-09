@@ -210,10 +210,6 @@ msgstr ""
 msgid "همه شهرها"
 msgstr ""
 
-#: admin/tabs/branches-tab.php:14
-msgid "شعب نفیس اکسپرس"
-msgstr ""
-
 #: admin/tabs/login-tab.php:57
 msgid "You have successfully logged out."
 msgstr ""

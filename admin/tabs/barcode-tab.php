@@ -20,8 +20,8 @@ if (!$token) {
     return;
 }
 
-$provinces = nafis_get_cached_provinces();
-$cities = nafis_get_cached_cities();
+$provinces = NafisOptionCachedProvinces::get([]);
+$cities = NafisOptionCachedCities::get([]);
 $today = current_time('Y-m-d');
 $selected_city = isset($_GET['city']) ? sanitize_text_field(wp_unslash($_GET['city'])) : '';
 $selected_province = isset($_GET['province_id']) ? sanitize_text_field(wp_unslash($_GET['province_id'])) : '';
@@ -141,7 +141,7 @@ $table->prepare_items();
                 </label>
                 <select name="status" id="status">
                     <option value=""><?php esc_html_e('همه وضعیت‌ها', 'nafis-express-shipping'); ?></option>
-                    <?php foreach (nafis_get_cached_statuses() as $status): ?>
+                    <?php foreach (NafisOptionCachedStatuses::get([]) as $status): ?>
                         <option value="<?php echo esc_attr($status['id']); ?>"
                             <?php selected($_GET['status'] ?? '', $status['id']); ?>>
                             <?php echo esc_html($status['title']); ?>

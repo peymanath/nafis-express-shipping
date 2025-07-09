@@ -2,7 +2,7 @@
 
 // Replace WooCommerce states with cached provinces
 add_filter('woocommerce_states', function ($states) {
-    $provinces = nafis_get_cached_provinces();
+    $provinces = NafisOptionCachedProvinces::get([]);
     $iran_states = [];
 
     foreach ($provinces as $province) {
@@ -15,7 +15,7 @@ add_filter('woocommerce_states', function ($states) {
 
 // Customize checkout fields
 add_filter('woocommerce_checkout_fields', function ($fields) {
-    $provinces = nafis_get_cached_provinces();
+    $provinces = NafisOptionCachedProvinces::get([]);
     $province_options = ['' => __('— انتخاب استان —', 'nafis-express-shipping')];
 
     foreach ($provinces as $province) {
@@ -37,7 +37,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     ];
 
     // Build city options based on selected province
-    $cities = nafis_get_cached_cities();
+    $cities = NafisOptionCachedCities::get([]);
     $city_options = ['' => __('— ابتدا استان را انتخاب کنید —', 'nafis-express-shipping')];
 
     if (!empty($selected_province)) {
@@ -79,8 +79,8 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 
 // Output province and city data for JS
 add_action('woocommerce_after_checkout_form', function () {
-    $provinces = nafis_get_cached_provinces();
-    $cities    = nafis_get_cached_cities();
+    $provinces = NafisOptionCachedProvinces::get([]);
+    $cities    = NafisOptionCachedCities::get([]);
 
     echo '<script>';
     echo 'window.nafisProvinces = ' . wp_json_encode($provinces) . ';';
@@ -90,8 +90,8 @@ add_action('woocommerce_after_checkout_form', function () {
 
 // Output province and city data for edit address page
 add_action('woocommerce_edit_address_form', function () {
-    $provinces = nafis_get_cached_provinces();
-    $cities    = nafis_get_cached_cities();
+    $provinces = NafisOptionCachedProvinces::get([]);
+    $cities    = NafisOptionCachedCities::get([]);
 
     echo '<script>';
     echo 'window.nafisProvinceOptions = ' . wp_json_encode(wp_list_pluck($provinces, 'name', 'id')) . ';';
@@ -101,8 +101,8 @@ add_action('woocommerce_edit_address_form', function () {
 
 // Default address fields for edit address form
 add_filter('woocommerce_default_address_fields', function ($fields) {
-    $provinces = nafis_get_cached_provinces();
-    $cities    = nafis_get_cached_cities();
+    $provinces = NafisOptionCachedProvinces::get([]);
+    $cities    = NafisOptionCachedCities::get([]);
 
     $province_options = ['' => __('— انتخاب استان —', 'nafis-express-shipping')];
     foreach ($provinces as $province) {
