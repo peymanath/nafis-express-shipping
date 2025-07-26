@@ -24,15 +24,20 @@ add_action('admin_enqueue_scripts', function () {
     );
 
     // Inject JS variables before the scriptپ
-    wp_add_inline_script('nafis-express-admin-script', 'const nafisProvinceCityData = ' . json_encode([
+    $data = [
         'cities'           => nafis_get_cached_cities(),
         'selectedCity'     => isset($_GET['city']) ? sanitize_text_field(wp_unslash($_GET['city'])) : '',
         'selectedProvince' => isset($_GET['province']) ? sanitize_text_field(wp_unslash($_GET['province'])) : '',
         'labels'           => [
             'allCities' => __('همه شهرها', 'nafis-express-shipping'),
         ],
-    ]) . ';', 'before');
+    ];
 
+    wp_add_inline_script(
+        'nafis-express-admin-script',
+        'const nafisProvinceCityData = ' . esc_js(wp_json_encode($data)) . ';',
+        'before'
+    );
     // Localize more data if needed
     wp_localize_script('nafis-express-admin-script', 'nafisExpressData', [
         'ajaxurl' => admin_url('admin-ajax.php'),

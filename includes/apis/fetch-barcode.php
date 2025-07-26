@@ -79,7 +79,7 @@ function nafis_fetch_exited_orders($token, $order_id = null)
 
     if (!$result['success']) {
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            $log_data = is_array($result['data']) ? json_encode($result['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : (string) $result['data'];
+            $log_data = is_array($result['data']) ? wp_json_encode($result['data']) : (string) $result['data'];
             error_log('⚠️ Failed to fetch exited orders: ' . $log_data);
         }        
         return ['data' => [], 'total' => 0];
