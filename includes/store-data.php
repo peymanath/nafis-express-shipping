@@ -13,7 +13,7 @@ function nafis_refresh_persistent_filter_data($token)
 
 function nafis_refresh_persistent_filter_data_delete()
 {
-    NafisOptionAuthentication::delete();
+    NafisOptionAuthentication::set([]);
     NafisOptionCachedBoxes::delete();
     NafisOptionCachedStatuses::delete();
     NafisOptionCachedProvinces::delete();
@@ -66,4 +66,21 @@ function nafis_store_provinces_and_cities_in_db($token)
 
     NafisOptionCachedProvinces::set($provinces);
     NafisOptionCachedCities::set($cities);
+
+    nafis_log_revalidation_time();
+}
+
+function nafis_log_revalidation_time()
+{
+    $upload_dir = wp_upload_dir();
+    $log_dir = trailingslashit($upload_dir['basedir']) . 'nafis-express-shipping';
+
+    if (! file_exists($log_dir)) {
+        wp_mkdir_p($log_dir);
+    }
+
+    $log_file = trailingslashit($log_dir) . 'revalidate.log';
+    $timestamp = current_time('mysql');
+
+    file_put_contents($log_file, "[{$timestamp}] Revalidated\n", FILE_APPEND);
 }

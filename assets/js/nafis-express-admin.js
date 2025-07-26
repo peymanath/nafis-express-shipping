@@ -42,43 +42,63 @@ const popup = (title = "عنوان پاپ اپ", content = "در حال بارگ
 };
 
 
+function renderBarcodesSection(barcodes) {
+
+  if (!Array.isArray(barcodes) || barcodes.length === 0) {
+    return `<p style="margin-top: 20px;">خالی</p>`;
+  }
+
+  return barcodes.map(barcode => `
+    <div class="nafis-barcode-box" style="border: 1px solid #ccc; border-radius: 6px; padding: 10px; margin: 16px 0;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>${barcode}</strong>
+        <button type="button" class="button track-barcode-btn" data-barcode="${barcode}">
+          مشاهده رهگیری
+        </button>
+      </div>
+      <div class="track-result" style="margin-top: 12px; display: none;"></div>
+    </div>
+  `).join('');
+
+}
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  /**
-   * Order EXited
-   */
-  document.querySelectorAll(".track-barcode-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-      const barcode = button.getAttribute("data-barcode");
-      const { content } = popup("رهگیری بارکد");
 
-      fetch(
-        `${nafisExpressData.ajaxurl}?action=nafis_track_barcode&barcode=${barcode}&nonce=${nafisExpressData.nonce}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          if (!data || !data.logs) {
-            content.innerHTML = "<p>اطلاعاتی یافت نشد.</p>";
-            return;
-          }
+  function handlerTrackButton() {
+    document.querySelectorAll(".track-barcode-btn").forEach((button) => {
+      console.log({ button })
+      button.addEventListener("click", () => {
+        const barcode = button.getAttribute("data-barcode");
+        const { content } = popup("رهگیری بارکد");
 
-          const header = `
+        fetch(
+          `${nafisExpressData.ajaxurl}?action=nafis_track_barcode&barcode=${barcode}&nonce=${nafisExpressData.nonce}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            if (!data || !data.logs) {
+              content.innerHTML = "<p>اطلاعاتی یافت نشد.</p>";
+              return;
+            }
+
+            const header = `
                         <p><strong>شرکت:</strong> ${data.companyTitle}</p>
                         <p><strong>گیرنده:</strong> ${data.receiverName
-            } | موبایل: ${data.receiverMobile}</p>
+              } | موبایل: ${data.receiverMobile}</p>
                         ${!!data.agentName
-              ? `<p><strong>مامور توزیع:</strong> ${data.agentName}</p>`
-              : ""
-            }
+                ? `<p><strong>مامور توزیع:</strong> ${data.agentName}</p>`
+                : ""
+              }
                         <p><strong>مبداً:</strong> ${data.startCity
-            } → <strong>مقصد:</strong> ${data.finalCity}</p>
+              } → <strong>مقصد:</strong> ${data.finalCity}</p>
                         <p><strong>شماره سفارش:</strong> ${data.orderID
-            } | وزن: ${data.weight} گرم</p>
+              } | وزن: ${data.weight} گرم</p>
                         <hr>
                     `;
 
-          const logTable = `
+            const logTable = `
                         <table style="width:100%; border-collapse:collapse; text-align:right;">
                             <thead>
                                 <tr>
@@ -89,30 +109,36 @@ document.addEventListener("DOMContentLoaded", () => {
                             </thead>
                             <tbody>
                                 ${data.logs
-              .map(
-                (log) => `
+                .map(
+                  (log) => `
                                     <tr>
                                         <td style="border-bottom:1px solid #eee; padding:6px;">${log.statusDateTimeString
-                  }</td>
+                    }</td>
                                         <td style="border-bottom:1px solid #eee; padding:6px;">${log.statusTitle
-                  }</td>
+                    }</td>
                                         <td style="border-bottom:1px solid #eee; padding:6px;">${log.branchTitle || "-"
-                  }</td>
+                    }</td>
                                     </tr>
                                 `
-              )
-              .join("")}
+                )
+                .join("")}
                             </tbody>
                         </table>
                     `;
 
-          content.innerHTML = header + logTable;
-        })
-        .catch(() => {
-          content.innerHTML = "<p>خطا در ارتباط با سرور.</p>";
-        });
+            content.innerHTML = header + logTable;
+          })
+          .catch(() => {
+            content.innerHTML = "<p>خطا در ارتباط با سرور.</p>";
+          });
+      });
     });
-  });
+  }
+
+  /**
+   * Order EXited
+   */
+  handlerTrackButton();
 
   /**
    * Issue Barcode
@@ -131,10 +157,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      console.log({ data })
       const infoTable = `
         <table style="width:100%; border-collapse:collapse; text-align:right; margin-bottom: 1rem;">
           <tbody>
-              <tr>
+              <tr> 
                 <td style="border-bottom:1px solid #eee; padding:6px;">نام</td>
                 <td style="border-bottom:1px solid #eee; padding:6px;">${data.receiverFirstName + " " + data.receiverLastName}</td>
               </tr>
@@ -228,6 +255,11 @@ document.addEventListener("DOMContentLoaded", () => {
           </tbody>
         </table>
       `;
+      const barcodesSection = `
+        <h3 style="margin-top: 20px;">بارکد ها</h3>
+        <div>${renderBarcodesSection(data.barcodes)}</div>
+      `;
+
 
       const footer = `
         <div style="text-align:right; margin-top:15px;">
@@ -236,7 +268,9 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      content.innerHTML = `<h3>اطلاعات سفارش</h3>${infoTable}<h3>محصولات</h4>${productList}${packagingSection}${footer}`;
+      content.innerHTML = `<h3>اطلاعات سفارش</h3>${infoTable}<h3>محصولات</h4>${productList}${packagingSection}${barcodesSection}${footer}`;
+
+
 
       // Add dynamic row logic
       const packagingBody = document.getElementById('packaging-body');
@@ -280,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("❌ لطفاً حداقل یک بسته‌بندی معتبر وارد کنید (شامل انتخاب جعبه و وزن بیش از ۵۰ گرم).");
           return;
         }
-        
+
         const finalPayload = {
           customer: {
             firstName: data.receiverFirstName,
@@ -307,58 +341,61 @@ document.addEventListener("DOMContentLoaded", () => {
         // const confirmBtn = document.getElementById('nafis-barcode-confirm-btn');
 
         fetch(testUrl.toString())
-        .then((res) => res.json())
-        .then((response) => {
-          // وضعیت موفق
-          if (response.success === true) {
-            const data = response.data;
-      
-            // بررسی وجود ارور در داده‌های موفق
-            const errors = Array.isArray(data)
-              ? data.filter(item => item.errorMessage).map(item => item.errorMessage)
-              : [];
-      
-            if (errors.length > 0) {
-              const message = "❌ خطا در صدور بارکد:\n\n" + errors.map((e, i) => `${i + 1}. ${e}`).join("\n");
-              alert(message);
+          .then((res) => res.json())
+          .then((response) => {
+            // وضعیت موفق
+            if (response.success === true) {
+              const data = response.data;
 
-              const hasUnsupportedCity = errors.some(e => e.includes("شهر مقصد تحت پوشش نفیس اکسپرس نیست"));
-              if (hasUnsupportedCity) {
-                // location.reload();
+              // بررسی وجود ارور در داده‌های موفق
+              const errors = Array.isArray(data)
+                ? data.filter(item => item.errorMessage).map(item => item.errorMessage)
+                : [];
+
+              if (errors.length > 0) {
+                const message = "❌ خطا در صدور بارکد:\n\n" + errors.map((e, i) => `${i + 1}. ${e}`).join("\n");
+                alert(message);
+
+                const hasUnsupportedCity = errors.some(e => e.includes("شهر مقصد تحت پوشش نفیس اکسپرس نیست"));
+                if (hasUnsupportedCity) {
+                  // location.reload();
+                }
+              } else {
+                alert("✅ بارکدها با موفقیت صادر شدند.");
               }
-            } else {
-              alert("✅ بارکدها با موفقیت صادر شدند.");
+
+              return; // ❗ جلوگیری از ادامه بررسی خطاهای پایین
             }
-      
-            return; // ❗ جلوگیری از ادامه بررسی خطاهای پایین
-          }
-      
-          // وضعیت ناموفق - بررسی خطاها
-          let errorMsg = "❌ خطا در صدور بارکد:";
-      
-          if (response.message) {
-            errorMsg += " " + response.message;
-          } else if (Array.isArray(response.response) && response.response[0]?.errorMessage) {
-            errorMsg += " " + response.response.map((r, i) => `\n${i + 1}. ${r.errorMessage}`).join("");
-          } else if (response.exception?.exceptionMessage) {
-            errorMsg += " " + response.exception.exceptionMessage;
-          } else {
-            errorMsg += " خطای نامشخص. لطفاً مجدد تلاش کنید.";
-          }
-      
-          alert(errorMsg);
-        })
-        .catch((err) => {
-          console.error("AJAX error:", err);
-          alert("❌ ارتباط با سرور برقرار نشد.");
-        })
-        .finally(() => {
-          confirmBtn.disabled = false;
-          confirmBtn.innerText = "تایید صدور";
-        });
-      
+
+            // وضعیت ناموفق - بررسی خطاها
+            let errorMsg = "❌ خطا در صدور بارکد:";
+
+            if (response.message) {
+              errorMsg += " " + response.message;
+            } else if (Array.isArray(response.response) && response.response[0]?.errorMessage) {
+              errorMsg += " " + response.response.map((r, i) => `\n${i + 1}. ${r.errorMessage}`).join("");
+            } else if (response.exception?.exceptionMessage) {
+              errorMsg += " " + response.exception.exceptionMessage;
+            } else {
+              errorMsg += " خطای نامشخص. لطفاً مجدد تلاش کنید.";
+            }
+
+            alert(errorMsg);
+          })
+          .catch((err) => {
+            console.error("AJAX error:", err);
+            alert("❌ ارتباط با سرور برقرار نشد.");
+          })
+          .finally(() => {
+            confirmBtn.disabled = false;
+            confirmBtn.innerText = "تایید صدور";
+          });
+
 
       });
+
+      // Handle Track Button
+      handlerTrackButton();
 
     });
   });

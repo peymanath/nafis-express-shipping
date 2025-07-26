@@ -68,7 +68,7 @@ add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column,
 
     $data = [
         'orderID'           => $order->get_id(),
-        'companyID'         => sanitize_text_field($auth_data['companyID']),
+        'companyID'         => sanitize_text_field($auth_data["companyID"]),
         'receiverFirstName' => trim($order->get_billing_first_name() ?: $order->get_shipping_first_name()),
         'receiverLastName'  => trim($order->get_billing_last_name() ?: $order->get_shipping_last_name()),
         'receiverMobile'    => $order->get_billing_phone() ?: $order->get_shipping_phone(),
@@ -125,6 +125,9 @@ add_action('manage_woocommerce_page_wc-orders_custom_column', function ($column,
                 ),
             ];
         }, $boxes)),
+
+        // 'barcodes'      => NafisPostMetaBarcodes::get($order->get_id()),
+        'barcodes'      => NafisPostMetaBarcodes::get("1163053"),
     ];
 
     $disabled_attr = $is_disabled ? 'disabled="disabled"' : '';

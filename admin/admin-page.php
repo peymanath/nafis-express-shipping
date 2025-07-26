@@ -1,108 +1,119 @@
 <?php
+if (!defined('ABSPATH')) exit;
 
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nafis_nonce'])) {
+// --- Handle POST & Permission ---
+function nafis_handle_admin_post() {
     if (
-        ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nafis_nonce'])), 'nafis_nonce')
+        $_SERVER['REQUEST_METHOD'] === 'POST'
+        && isset($_POST['nafis_nonce'])
     ) {
-        wp_die('Invalid nonce');
-    }
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nafis_nonce'])), 'nafis_nonce')) {
+            wp_die('Invalid nonce');
+        }
 
-    if (!current_user_can('manage_woocommerce')) {
-        wp_die(esc_html__('You do not have permission to access this section.', 'nafis-express-shipping'));
+        if (!current_user_can('manage_woocommerce')) {
+            wp_die(esc_html__('You do not have permission to access this section.', 'nafis-express-shipping'));
+        }
     }
 }
 
-if (! defined('ABSPATH')) exit;
+add_action('admin_init', 'nafis_handle_admin_post');
 
-
-global $nafis_global_notice_shown;
-$nafis_global_notice_shown = false;
-
-
+// --- Main Admin Page Renderer ---
 function nafis_express_shipping_render_admin_page()
 {
     global $nafis_global_notice_shown;
+    $nafis_global_notice_shown = false;
 
-    /**
-     * Check Token Expiration
-     */
     $token = nafis_get_valid_token();
+    $active_tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : ($token ? 'barcode' : 'setting');
 
-    /**
-     * Set Active Tab
-     */
-    $token = nafis_get_valid_token();
-    $active_tab = isset($_GET['tab'])
-        ? sanitize_key($_GET['tab'])
-        : ($token ? 'barcode' : 'setting');
+    nafis_render_rest_api_warning();
+    nafis_render_admin_tabs($active_tab, $token);
+    nafis_render_admin_tab_content($active_tab, $token);
+}
 
-    echo '<h1 style="margin-top: 20px;">' . esc_html__('Nafis Express Customer Panel', 'nafis-express-shipping') . '</h1>';
+function nafis_render_rest_api_warning() {
+    global $nafis_global_notice_shown;
 
-    // --- REST API Access Check ---
-    $rest_check_response = wp_remote_get(rest_url(NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '/ping'), [
+    $response = wp_remote_get(rest_url(NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '/ping'), [
         'timeout' => 5,
         'headers' => ['Accept' => 'application/json']
     ]);
 
-    if (is_wp_error($rest_check_response) || wp_remote_retrieve_response_code($rest_check_response) >= 400) {
-        echo '<div class="notice notice-error"><p>' .
-        sprintf(
-            esc_html__('❗ REST API access is blocked. Please ensure that the %1$s endpoint (%2$s) is publicly accessible. This is required for Nafis Express to update your data correctly. For more information, please visit %3$s.', 'nafis-express-shipping'),
-            '<code>' . NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '</code>',
-            esc_url(rest_url(NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '/')),
-            '<a href="https://nafisexpress.com" target="_blank">' . __('Nafis Express', 'nafis-express-shipping') . '</a>'
-        ) .
-        '</p></div>';
-    
+    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) >= 400) {
+        ?>
+        <div class="notice notice-error">
+            <p>
+                <?php
+                printf(
+                    esc_html__('❗ REST API access is blocked. Please ensure that the %1$s endpoint (%2$s) is publicly accessible. This is required for Nafis Express to update your data correctly. For more information, please visit %3$s.', 'nafis-express-shipping'),
+                    '<code>' . NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '</code>',
+                    esc_url(rest_url(NAFIS_EXPRESS_SHIPPING_API_NAMESPACE . '/')),
+                    '<a href="https://nafisexpress.com" target="_blank">' . __('Nafis Express', 'nafis-express-shipping') . '</a>'
+                );
+                ?>
+            </p>
+        </div>
+        <?php
         $nafis_global_notice_shown = true;
     }
-?>
-    <div class="wrap wpp-settings-wrap">
+}
 
-        <h2 class="nav-tab-wrapper">
+function nafis_render_admin_tabs($active_tab, $token) {
+    ?>
+    <div class="nafis-express-shipping-layout-admin">
+        <h1 class="nafis-express-shipping-title-plugin-page">
+            <?php esc_html_e('پنل مشتریان نفیس اکسپرس', 'nafis-express-shipping'); ?>
+        </h1>
 
-            <a href="?page=nafis-express-shipping&tab=barcode"
-                class="nav-tab <?php echo $active_tab === 'barcode' ? 'nav-tab-active' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
-                <?php echo esc_html__('Barcodes', 'nafis-express-shipping'); ?>
-            </a>
-
-            <a href="?page=nafis-express-shipping&tab=setting"
-                class="nav-tab <?php echo $active_tab === 'setting' ? 'nav-tab-active' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
-                <?php echo esc_html__('Setting', 'nafis-express-shipping'); ?>
-            </a>
-
-            <a href="?page=nafis-express-shipping&tab=quick-guide"
-                class="nav-tab <?php echo $active_tab === 'quick-guide' ? 'nav-tab-active' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
-                <?php echo esc_html__('راهنمای سریع', 'nafis-express-shipping'); ?>
-            </a>
+        <h2 class="tab-wrapper">
+            <?php foreach ([
+                'barcode' => __('Barcodes', 'nafis-express-shipping'),
+                'setting' => __('Setting', 'nafis-express-shipping'),
+                'quick-guide' => __('راهنمای سریع', 'nafis-express-shipping')
+            ] as $key => $label): ?>
+                <a href="?page=nafis-express-shipping&tab=<?php echo esc_attr($key); ?>"
+                   class="tab <?php echo $active_tab === $key ? 'active-tab' : ''; ?> <?php echo $token ? '' : 'disabled'; ?>">
+                    <?php echo esc_html($label); ?>
+                </a>
+            <?php endforeach; ?>
         </h2>
+    <?php
+}
 
-        <div id="tab_container">
-            <?php
-            switch ($active_tab) {
-                // case 'branches':
-                //     require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/branches-tab.php';
-                //     break;
-                case 'barcode':
-                    require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/barcode-tab.php';
-                    break;
-                case 'setting':
-                    require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/setting-tab.php';
-                    break;
-                case 'quick-guide':
-                    require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/quick-guide-tab.php';
-                    break;
-                default:
-                    echo '<div class="notice notice-error"><p>' . esc_html__('Tab is invalid.', 'nafis-express-shipping') . '</p></div>';
-            }
+function nafis_render_admin_tab_content($active_tab, $token) {
+    global $nafis_global_notice_shown;
+    ?>
+    <div id="tab_container">
+        <?php
+        switch ($active_tab) {
+            case 'barcode':
+                require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/barcode-tab.php';
+                break;
+            case 'setting':
+                require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/setting-tab.php';
+                break;
+            case 'quick-guide':
+                require_once NAFIS_EXPRESS_SHIPPING_ADMIN . 'tabs/quick-guide-tab.php';
+                break;
+            default:
+                ?>
+                <div class="notice notice-error">
+                    <p><?php esc_html_e('Tab is invalid.', 'nafis-express-shipping'); ?></p>
+                </div>
+                <?php
+        }
 
-            if (!$token && !$nafis_global_notice_shown && $active_tab === 'login') {
-                echo '<div class="notice notice-warning is-dismissible"><p>' .
-                    esc_html__('Your session has expired. Please log in again.', 'nafis-express-shipping') .
-                    '</p></div>';
-            }
+        if (!$token && !$nafis_global_notice_shown && $active_tab === 'login') {
             ?>
-        </div>
+            <div class="notice notice-warning is-dismissible">
+                <p><?php esc_html_e('Your session has expired. Please log in again.', 'nafis-express-shipping'); ?></p>
+            </div>
+            <?php
+        }
+        ?>
     </div>
-<?php
+    </div>
+    <?php
 }

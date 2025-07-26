@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: 8px;
 }
+
 .nafis-filter-form .headline {
   margin-bottom: 16px;
   display: flex;
@@ -15,6 +16,7 @@
   justify-content: space-between;
   width: 100%;
 }
+
 .nafis-field {
   display: flex;
   flex-direction: column;
@@ -42,6 +44,7 @@
   border-radius: 4px;
   font-size: 13px;
 }
+
 .nafis-grid .button {
   width: 100%;
   padding: 6px 10px;
@@ -75,6 +78,7 @@
 .wp-list-table .column-branchName {
   width: 150px;
 }
+
 .wp-list-table .column-weight {
   width: 100px;
 }
@@ -87,7 +91,103 @@
   border-radius: 4px;
   font-weight: 500;
 }
-mark.order-status.status-nafis-barcode{
-  color:white;
+
+mark.order-status.status-nafis-barcode {
+  color: white;
   background-color: #e8354a;
+}
+
+/* Layout */
+.nafis-express-shipping-title-plugin-page {
+  color: #e8354a;
+  padding: 12px;
+}
+
+.nafis-express-shipping-layout-admin {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  margin-left: 24px;
+  margin-top: 32px;
+}
+
+/* Login */
+.nafis-login-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px 0;
+  width: 100%;
+  display: flex;
+  gap: 32px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nafis-login-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px 32px;
+  box-shadow: 0px 2px 20px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 320px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nafis-login-box label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.nafis-login-box input[type="text"],
+.nafis-login-box input[type="password"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccd0d4;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+.nafis-login-box input[type="submit"] {
+  width: 100%;
+  background-color: #007cba;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nafis-login-box input[type="submit"]:hover {
+  background-color: #005fa3;
+}
+
+
+/* Tabs */
+.tab-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.tab {
+  background-color: #fff;
+  box-shadow: 0px 2px 20px 4px rgba(0, 0, 0, 0.05);
+  padding: 12px;
+  border-radius: 12px;
+  text-decoration: none;
+}
+
+.active-tab {
+  background-color: #e8354a;
+  color: #fff;
 }

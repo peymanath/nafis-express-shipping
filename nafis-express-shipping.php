@@ -61,6 +61,9 @@ define('NAFIS_EXPRESS_SHIPPING_INC_API', NAFIS_EXPRESS_SHIPPING_INC . 'apis/');
 // Define path to the includes directory Wp-Options
 define('NAFIS_EXPRESS_SHIPPING_INC_OPTIONS', NAFIS_EXPRESS_SHIPPING_INC . 'options/');
 
+// Define path to the includes directory Wp-Posrmeta
+define('NAFIS_EXPRESS_SHIPPING_INC_POST_META', NAFIS_EXPRESS_SHIPPING_INC . 'post-meta/');
+
 // Define path to the includes directory Actions
 define('NAFIS_EXPRESS_SHIPPING_INC_ACTIONS', NAFIS_EXPRESS_SHIPPING_INC . 'actions/');
 
@@ -109,6 +112,3 @@ require_once NAFIS_EXPRESS_SHIPPING_INC_ACTIONS . "all-actions.php";
 
 // Load core plugin files
 require_once NAFIS_EXPRESS_SHIPPING_INC . 'class-loader.php';
-
-// Activation Hook
-require_once NAFIS_EXPRESS_SHIPPING_INC . "activation-hook.php";

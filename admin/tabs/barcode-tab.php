@@ -35,6 +35,22 @@ if (!isset($_GET['date_from']) || sanitize_text_field(wp_unslash($_GET['date_fro
 $date_to = isset($_GET['date_to']) ? sanitize_text_field(wp_unslash($_GET['date_to'])) : '';
 $result = nafis_fetch_exited_orders($token);
 
+/**
+ * Set Barcodes in Database
+ */
+$ordersGrouped = [];
+foreach ($result['data'] as $item) {
+    $post_id = (int) $item['orderID'];
+    $barcode = $item['barcode'];
+    if (!isset($ordersGrouped[$post_id])) {
+        $ordersGrouped[$post_id] = [];
+    }
+    $ordersGrouped[$post_id][] = $barcode;
+}
+foreach ($ordersGrouped as $post_id => $barcodes) {
+    NafisPostMetaBarcodes::set($post_id, $barcodes);
+}
+
 $table = new Nafis_Exited_Orders_List_Table($result['data'], $result['total']);
 $table->prepare_items();
 ?>

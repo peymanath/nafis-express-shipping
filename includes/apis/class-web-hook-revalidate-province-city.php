@@ -8,7 +8,7 @@ add_action('rest_api_init', function () {
 	NafisApiLoader::register_route(
 		'/revalidate-province-city',
 		[NafisRevalidateProvinceCityEndpoint::class, 'handle'],
-		['GET']
+		['POST']
 	);
 });
 
